@@ -8148,7 +8148,9 @@
           sync();
           f.addEventListener("submit", function (e) { e.preventDefault(); var v = i ? i.value.trim() : ""; if (!v) { if (i) i.focus(); return; } openM(v); });
         });
-        if (/[?#]demo/.test(location.href)) openM("yourstore.com/your-product");
+        if (/demo=success/.test(location.href)) { overlay.classList.add("open"); doneStep(); }
+        else if (/demo=processing/.test(location.href)) { overlay.classList.add("open"); processing("yourstore.com/your-product"); }
+        else if (/[?#]demo/.test(location.href)) openM("yourstore.com/your-product");
       })();
     </script>
   </body>

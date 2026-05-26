@@ -250,10 +250,6 @@
           <a href="#samples">Samples</a>
           <a href="#process">Process</a>
         </div>
-        <div class="nav2-right">
-          <a class="login" href="https://consumer-app.getgaana.com/sign-in" target="_blank" rel="noopener noreferrer">Login</a>
-          <a class="btn btn-primary" href="https://getgaana.com/book-demo">Book a Demo</a>
-        </div>
       </div>
     </nav>
 
@@ -724,7 +720,9 @@
           sync();
           f.addEventListener("submit", function (e) { e.preventDefault(); var v = i ? i.value.trim() : ""; if (!v) { if (i) i.focus(); return; } openM(v); });
         });
-        if (/[?#]demo/.test(location.href)) openM("yourstore.com/your-product");
+        if (/demo=success/.test(location.href)) { overlay.classList.add("open"); doneStep(); }
+        else if (/demo=processing/.test(location.href)) { overlay.classList.add("open"); processing("yourstore.com/your-product"); }
+        else if (/[?#]demo/.test(location.href)) openM("yourstore.com/your-product");
       })();
     </script>
   </body>
