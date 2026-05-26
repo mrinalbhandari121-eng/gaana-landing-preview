@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GaanaAI — Send a product URL. Get a high-converting PDP video in 24 hours.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --primary: #2c234d;
+        --secondary: #7a33ff;
+        --pink: #f24cf3;
+        --tertiary: #ede3ff;
+        --text: #1b1b1b;
+        --text-2: #1b1b1ba6;
+        --border: #1b1b1b14;
+        --white: #fff;
+        --gray-04: #f7f7fa;
+        --dark: #140f28;
+        --good: #1f9d63;
+        --good-bg: #eefaf2;
+        --bad: #d8483f;
+        --bad-bg: #fdf2f1;
+        --pill: 200px;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; font-family: "Inter", system-ui, sans-serif; color: var(--text); background: #fff; }
+      a { text-decoration: none; color: inherit; }
+      .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+      .eyebrow { color: var(--secondary); font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+      .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: var(--pill); padding: 15px 26px; font-weight: 600; font-size: 15px; font-family: inherit; cursor: pointer; border: 1px solid transparent; transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+      .btn-primary { background: var(--secondary); color: #fff; }
+      .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(122, 51, 255, 0.4); }
+      .btn-light { background: #fff; color: var(--primary); }
+      .btn-light:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.15); }
+      .btn-ghost-dark { background: transparent; color: #fff; border-color: rgba(255, 255, 255, 0.25); }
+      .btn-ghost-dark:hover { background: rgba(255, 255, 255, 0.08); }
+      .btn-ghost { background: transparent; color: var(--primary); border-color: var(--border); }
+      .btn-ghost:hover { background: var(--gray-04); }
+
+      /* ---------- nav ---------- */
+      .nav { position: absolute; top: 0; left: 0; right: 0; z-index: 20; }
+      .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 22px 24px; max-width: 1180px; margin: 0 auto; }
+      .nav-logo { display: flex; align-items: center; gap: 9px; color: #fff; font-weight: 800; font-size: 18px; }
+      .nav-logo .mark { width: 26px; height: 26px; border-radius: 7px; background: var(--secondary); display: inline-flex; align-items: center; justify-content: center; font-size: 14px; }
+      .nav-actions { display: flex; align-items: center; gap: 10px; }
+      .nav .btn { padding: 11px 18px; font-size: 14px; }
+
+      /* ---------- hero ---------- */
+      .hero { position: relative; background: var(--dark); color: #fff; overflow: hidden; padding: 150px 0 90px; }
+      .hero:before { content: ""; position: absolute; width: 760px; height: 560px; left: 50%; top: -120px; transform: translateX(-50%); background: radial-gradient(circle, rgba(122, 51, 255, 0.45), rgba(122, 51, 255, 0) 65%); filter: blur(20px); pointer-events: none; }
+      .hero:after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(circle at 50% 30%, #000, transparent 70%); pointer-events: none; }
+      .hero-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 52px; align-items: center; }
+      .hero-left { text-align: left; }
+      .hero-left .hero-sub { margin: 18px 0 0; }
+      .hero-left .hero-form { margin: 30px 0 0; }
+      /* right-side video placeholder (swap for real hero video) */
+      .hero-ph { position: relative; aspect-ratio: 4 / 3; border-radius: 20px; background: rgba(255, 255, 255, 0.05); border: 2px dashed rgba(255, 255, 255, 0.22); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: rgba(255, 255, 255, 0.6); overflow: hidden; }
+      .hero-ph img, .hero-ph video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .hero-ph-play { position: relative; z-index: 2; width: 64px; height: 64px; border-radius: 50%; background: var(--secondary); display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 30px rgba(122, 51, 255, 0.5); margin-bottom: 4px; }
+      .hero-ph-play:after { content: ""; border-style: solid; border-width: 11px 0 11px 18px; border-color: transparent transparent transparent #fff; margin-left: 4px; }
+      .hero-ph-label { position: relative; z-index: 2; font-weight: 800; letter-spacing: 0.14em; font-size: 14px; }
+      .hero-ph small { position: relative; z-index: 2; font-size: 12px; opacity: 0.8; }
+      .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); color: #d8ffe9; font-size: 13px; font-weight: 600; padding: 7px 16px; border-radius: var(--pill); }
+      .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: #43d391; }
+      .hero h1 { font-size: 46px; line-height: 1.07; letter-spacing: -0.02em; font-weight: 800; margin: 20px 0 0; }
+      .hero h1 .accent { color: #b794ff; }
+      .hero-sub { color: rgba(255, 255, 255, 0.6); font-size: 17px; line-height: 1.6; max-width: 540px; margin: 18px auto 0; }
+      .hero-form { display: flex; gap: 8px; max-width: 540px; margin: 30px auto 0; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: var(--pill); padding: 6px 6px 6px 22px; backdrop-filter: blur(12px); }
+      .hero-form input { flex: 1; background: transparent; border: 0; outline: 0; color: #fff; font-size: 15px; font-family: inherit; }
+      .hero-form input::placeholder { color: rgba(255, 255, 255, 0.5); }
+      .hero-form .btn { padding: 14px 24px; white-space: nowrap; }
+      .hero-ctas { display: flex; gap: 12px; justify-content: center; margin-top: 18px; }
+      /* stats */
+      .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 720px; margin: 44px auto 0; position: relative; z-index: 2; }
+      .stat { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 22px 18px; text-align: center; }
+      .stat .num { font-size: 34px; font-weight: 800; color: #fff; letter-spacing: -0.01em; }
+      .stat .lbl { font-size: 13px; color: rgba(255, 255, 255, 0.55); margin-top: 6px; }
+
+      /* ---------- section base ---------- */
+      .section { padding: 92px 0; }
+      .section-head { text-align: center; max-width: 660px; margin: 0 auto 52px; }
+      .section-head h2 { font-size: 38px; line-height: 1.12; letter-spacing: -0.02em; font-weight: 800; color: var(--primary); margin: 12px 0 0; }
+      .section-head p { color: var(--text-2); font-size: 17px; line-height: 1.55; margin: 14px auto 0; }
+
+      /* ---------- before vs after ---------- */
+      .ba { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+      .ba-card { border-radius: 22px; padding: 28px; border: 1px solid var(--border); }
+      .ba-card.before { background: var(--bad-bg); border-color: #f3d6d3; }
+      .ba-card.after { background: var(--good-bg); border-color: #cdeed8; }
+      .ba-tag { font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+      .ba-card.before .ba-tag { color: var(--bad); }
+      .ba-card.after .ba-tag { color: var(--good); }
+      .ba-card h3 { font-size: 20px; font-weight: 800; color: var(--primary); margin: 8px 0 18px; }
+      /* dark inset panel */
+      .panel { background: #16121f; border-radius: 14px; padding: 20px; min-height: 220px; }
+      .panel.tags { display: flex; flex-wrap: wrap; gap: 9px; align-content: flex-start; }
+      .tag { font-size: 12.5px; font-weight: 600; padding: 7px 12px; border-radius: var(--pill); white-space: nowrap; }
+      .tag.r { background: #3a1f25; color: #ff9a8f; }
+      .tag.y { background: #3a341f; color: #f3d77a; }
+      .tag.b { background: #1f2c3a; color: #7fb4ff; }
+      .tag.p { background: #2a1f3a; color: #c79bff; }
+      .tag.g { background: #1f3a2e; color: #74e0a6; }
+      /* flow panel */
+      .flow { display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+      .flow-node { background: #221b30; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 14px 16px; color: #e7e2f0; font-size: 14px; display: flex; align-items: center; gap: 10px; font-family: ui-monospace, Menlo, monospace; }
+      .flow-node.brand { color: #fff; background: var(--secondary); border-color: var(--secondary); justify-content: center; font-family: inherit; font-weight: 700; }
+      .flow-node.pub { color: #74e0a6; }
+      .flow-arrow { text-align: center; color: #4caf7d; font-size: 16px; line-height: 1; }
+      /* ba metrics */
+      .ba-metrics { margin-top: 18px; }
+      .ba-metric { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; font-size: 14px; border-top: 1px solid rgba(0, 0, 0, 0.06); color: var(--text-2); }
+      .ba-metric:first-child { border-top: 0; }
+      .ba-metric b { font-weight: 800; font-size: 16px; }
+      .ba-card.before .ba-metric b { color: var(--bad); }
+      .ba-card.after .ba-metric b { color: var(--good); }
+
+      /* ---------- reasons grid ---------- */
+      .reasons-sec { background: var(--dark); color: #fff; }
+      .reasons-sec .section-head h2 { color: #fff; }
+      .reasons-sec .section-head p { color: rgba(255, 255, 255, 0.55); }
+      .reasons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .reason { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.09); border-radius: 16px; padding: 24px; }
+      .reason .ico { width: 40px; height: 40px; border-radius: 10px; background: rgba(122, 51, 255, 0.18); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 16px; }
+      .reason h4 { font-size: 16px; font-weight: 700; margin: 0 0 8px; color: #fff; }
+      .reason p { font-size: 14px; line-height: 1.6; color: rgba(255, 255, 255, 0.55); margin: 0; }
+
+      /* ---------- PDP visual proof (reused from homepage) ---------- */
+      .proof { background: var(--gray-04); }
+      .pdp-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; max-width: 980px; margin: 0 auto; }
+      .pdp-mock { margin: 0; }
+      .pdp-cap { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 14px; }
+      .pdp-cap .d { width: 8px; height: 8px; border-radius: 50%; }
+      .pdp-cap.before { color: #8a8a95; } .pdp-cap.before .d { background: #c9c9d2; }
+      .pdp-cap.after { color: var(--secondary); } .pdp-cap.after .d { background: var(--secondary); }
+      .pdp-frame { position: relative; background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 18px; box-shadow: 0 10px 30px rgba(27, 27, 27, 0.05); }
+      .pdp-frame.hot { border-color: var(--secondary); box-shadow: 0 26px 60px rgba(122, 51, 255, 0.18); }
+      .pdp-cols { display: grid; grid-template-columns: 1.05fr 1fr; gap: 16px; }
+      .ph { position: relative; aspect-ratio: 1/1; border-radius: 10px; overflow: hidden; border: 2px solid transparent; }
+      .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .ph-play { position: absolute; inset: 0; margin: auto; width: 56px; height: 56px; border-radius: 50%; background: var(--secondary); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 28px rgba(122, 51, 255, 0.45); z-index: 2; }
+      .ph-play:after { content: ""; border-style: solid; border-width: 9px 0 9px 15px; border-color: transparent transparent transparent #fff; margin-left: 3px; }
+      .pdp-info { display: flex; flex-direction: column; gap: 11px; padding-top: 2px; }
+      .wf { height: 11px; border-radius: 6px; background: #ebebf1; }
+      .wf.title { height: 15px; width: 80%; background: #dadae2; }
+      .wf.price { height: 20px; width: 42%; background: #cdced8; }
+      .wf-stars { display: flex; gap: 4px; } .wf-stars i { width: 11px; height: 11px; border-radius: 50%; background: #e2e2ea; }
+      .wf.l1 { width: 95%; } .wf.l2 { width: 88%; } .wf.l3 { width: 60%; }
+      .wf-btn { margin-top: 6px; height: 38px; border-radius: var(--pill); background: #e0e0e8; }
+      .wf-btn.hot { background: var(--secondary); }
+      .eng-ribbon { position: absolute; top: -13px; right: 18px; background: var(--secondary); color: #fff; font-size: 13px; font-weight: 700; padding: 8px 16px; border-radius: var(--pill); box-shadow: 0 12px 26px rgba(122, 51, 255, 0.4); }
+      .pdp-metric { margin-top: 16px; font-size: 14px; color: var(--text-2); }
+      .pdp-metric b { font-weight: 800; } .pdp-metric.before b { color: #6f6f7a; } .pdp-metric.after b { color: var(--secondary); }
+
+      /* ---------- final CTA ---------- */
+      .final { padding: 40px 0 100px; }
+      .final-card { background: var(--dark); color: #fff; border-radius: 28px; padding: 64px 32px; text-align: center; position: relative; overflow: hidden; }
+      .final-card:before { content: ""; position: absolute; width: 520px; height: 360px; left: 50%; top: -80px; transform: translateX(-50%); background: radial-gradient(circle, rgba(122, 51, 255, 0.4), transparent 65%); }
+      .final-card h2 { position: relative; font-size: 36px; font-weight: 800; letter-spacing: -0.02em; margin: 0; }
+      .final-card p { position: relative; color: rgba(255, 255, 255, 0.6); margin: 14px 0 28px; font-size: 16px; }
+      .final-card .row { position: relative; display: flex; gap: 14px; justify-content: center; align-items: center; }
+
+      /* ---------- footer ---------- */
+      .footer { background: var(--dark); color: rgba(255, 255, 255, 0.5); padding: 36px 0; font-size: 13px; }
+      .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+      .footer .nav-logo { font-size: 16px; }
+
+      /* ---------- main-page nav ---------- */
+      .nav2 { position: absolute; top: 0; left: 0; right: 0; z-index: 20; }
+      .nav2-inner { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; max-width: 1200px; margin: 0 auto; }
+      .nav2-logo img { height: 28px; filter: brightness(0) invert(1); }
+      .nav2-links { display: flex; gap: 28px; }
+      .nav2-links a { color: rgba(255, 255, 255, 0.75); font-size: 14px; font-weight: 500; }
+      .nav2-links a:hover { color: #fff; }
+      .nav2-right { display: flex; align-items: center; gap: 16px; }
+      .nav2-right .login { color: #fff; font-size: 14px; font-weight: 600; }
+      @media (max-width: 900px) { .nav2-links { display: none; } }
+
+      /* ---------- trusted by ---------- */
+      .trusted { padding: 44px 0 12px; background: #fff; }
+      .trusted-label { text-align: center; font-size: 13px; color: var(--text-2); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 24px; }
+      .mq { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+      .mq-track { display: flex; gap: 64px; width: max-content; animation: mqscroll 32s linear infinite; align-items: center; }
+      .mq-track img { height: 30px; width: auto; object-fit: contain; filter: grayscale(1); opacity: 0.5; transition: filter 0.2s, opacity 0.2s; }
+      .mq-track img:hover { filter: none; opacity: 1; }
+      @keyframes mqscroll { to { transform: translateX(-50%); } }
+
+      /* ---------- how it works ---------- */
+      .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+      .how-step { text-align: center; padding: 0 12px; }
+      .how-num { font-size: 54px; font-weight: 800; background: linear-gradient(135deg, var(--secondary), var(--pink)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; }
+      .how-step h4 { font-size: 18px; font-weight: 700; color: var(--primary); margin: 14px 0 8px; }
+      .how-step p { font-size: 14px; color: var(--text-2); line-height: 1.6; margin: 0 auto; max-width: 260px; }
+      .how-step .tag { display: inline-block; margin-top: 14px; font-size: 12px; font-weight: 600; color: var(--secondary); background: var(--tertiary); padding: 5px 12px; border-radius: var(--pill); }
+
+      /* ---------- samples ---------- */
+      .samples { background: var(--gray-04); }
+      .sample-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 920px; margin: 0 auto; }
+      .sample-card { background: #fff; border: 1px solid var(--border); border-radius: 18px; overflow: hidden; box-shadow: 0 10px 30px rgba(27, 27, 27, 0.05); }
+      .sample-media { position: relative; aspect-ratio: 16/10; overflow: hidden; background: #0f0f14; }
+      .sample-media img { width: 100%; height: 100%; object-fit: cover; }
+      .sample-play { position: absolute; inset: 0; margin: auto; width: 58px; height: 58px; border-radius: 50%; background: rgba(255, 255, 255, 0.94); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
+      .sample-play:after { content: ""; border-style: solid; border-width: 10px 0 10px 16px; border-color: transparent transparent transparent var(--secondary); margin-left: 3px; }
+      .sample-body { padding: 18px 20px; }
+      .sample-body h4 { margin: 0 0 4px; font-size: 16px; font-weight: 700; color: var(--primary); }
+      .sample-body p { margin: 0; font-size: 13px; color: var(--text-2); }
+
+      /* ---------- process ---------- */
+      .proc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+      .proc { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 22px; }
+      .proc .n { width: 30px; height: 30px; border-radius: 8px; background: var(--tertiary); color: var(--secondary); font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 14px; margin-bottom: 14px; }
+      .proc h4 { font-size: 15px; font-weight: 700; color: var(--primary); margin: 0 0 6px; }
+      .proc p { font-size: 13px; color: var(--text-2); line-height: 1.55; margin: 0; }
+
+      /* ---------- main-page footer ---------- */
+      .footer2 { background: var(--dark); color: rgba(255, 255, 255, 0.5); padding: 64px 0 28px; font-size: 14px; }
+      .footer2-main { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; padding-bottom: 40px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+      .footer2-brand img { height: 28px; filter: brightness(0) invert(1); }
+      .footer2-brand p { color: rgba(255, 255, 255, 0.5); line-height: 1.6; max-width: 260px; margin: 14px 0 18px; }
+      .footer2-social { display: flex; gap: 10px; }
+      .footer2-social a { width: 34px; height: 34px; border-radius: 8px; background: rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.7); }
+      .footer2-social a:hover { background: var(--secondary); color: #fff; }
+      .footer2-col h3 { color: #fff; font-size: 14px; font-weight: 700; margin: 0 0 16px; }
+      .footer2-col a { display: block; color: rgba(255, 255, 255, 0.55); margin-bottom: 10px; }
+      .footer2-col a:hover { color: #fff; }
+      .footer2-bottom { padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 13px; color: rgba(255, 255, 255, 0.35); }
+
+      @media (max-width: 820px) {
+        .hero h1 { font-size: 34px; }
+        .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+        .hero-left { text-align: center; }
+        .hero-left .hero-sub, .hero-left .hero-form { margin-left: auto; margin-right: auto; }
+        .stats, .ba, .reasons, .pdp-grid2, .how-steps, .sample-grid { grid-template-columns: 1fr; }
+        .proc-grid { grid-template-columns: 1fr 1fr; }
+        .section-head h2 { font-size: 28px; }
+        .hero-ctas { flex-direction: column; }
+        .footer2-main { grid-template-columns: 1fr 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============ NAV (matches main site) ============ -->
+    <nav class="nav2">
+      <div class="nav2-inner">
+        <a class="nav2-logo" href="https://getgaana.com/"><img src="logo.svg" alt="GaanaAI" /></a>
+        <div class="nav2-links">
+          <a href="#how">How it Works</a>
+          <a href="#samples">Samples</a>
+          <a href="#process">Process</a>
+        </div>
+        <div class="nav2-right">
+          <a class="login" href="https://consumer-app.getgaana.com/sign-in" target="_blank" rel="noopener noreferrer">Login</a>
+          <a class="btn btn-primary" href="https://getgaana.com/book-demo">Book a Demo</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ============ HERO ============ -->
+    <header class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-left">
+          <div class="hero-badge"><span class="dot"></span> For D2C and consumer brands · 24-hour turnaround</div>
+          <h1>Send a product URL. Get a <span class="accent">high-converting PDP video</span> in 24 hours.</h1>
+          <p class="hero-sub">
+            Search algorithms rank video listings higher. Ad platforms reward video creative. Shoppers buy faster when
+            they can see, not just read.
+          </p>
+          <form class="hero-form" onsubmit="return false">
+            <input type="url" placeholder="Paste your product page URL…" aria-label="Product page URL" />
+            <button class="btn btn-primary" type="submit">Get my free video →</button>
+          </form>
+        </div>
+        <div class="hero-right">
+          <!-- PLACEHOLDER: drop the hero product VIDEO here — swap for <video autoplay muted loop> or <img> poster -->
+          <div class="hero-ph">
+            <div class="hero-ph-play"></div>
+            <span class="hero-ph-label">VIDEO</span>
+            <small>your product video</small>
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="stats">
+          <div class="stat"><div class="num">+262%</div><div class="lbl">PDP conversion lift with video</div></div>
+          <div class="stat"><div class="num">+239%</div><div class="lbl">add-to-cart rate with video</div></div>
+          <div class="stat"><div class="num">+242%</div><div class="lbl">time-on-page with video</div></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ TRUSTED BY ============ -->
+    <section class="trusted">
+      <div class="wrap">
+        <div class="trusted-label">Trusted by brands selling across every channel</div>
+        <div class="mq">
+          <div class="mq-track">
+            <img src="logos/pepsodent.png" alt="Pepsodent" />
+            <img src="logos/unilever-food.png" alt="Unilever Food Solutions" />
+            <img src="logos/langoor.png" alt="Langoor" />
+            <img src="logos/epson.png" alt="Epson" />
+            <img src="logos/furnishka.png" alt="Furnishka" />
+            <img src="logos/sheaffer.png" alt="Sheaffer" />
+            <img src="logos/unilever.png" alt="Unilever" />
+            <img src="logos/i95dev.png" alt="i95Dev" />
+            <!-- duplicate set for seamless loop -->
+            <img src="logos/pepsodent.png" alt="" />
+            <img src="logos/unilever-food.png" alt="" />
+            <img src="logos/langoor.png" alt="" />
+            <img src="logos/epson.png" alt="" />
+            <img src="logos/furnishka.png" alt="" />
+            <img src="logos/sheaffer.png" alt="" />
+            <img src="logos/unilever.png" alt="" />
+            <img src="logos/i95dev.png" alt="" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============ BEFORE / AFTER ============ -->
+    <section class="section ba3-section" id="before-after" style="background: var(--gray-04)">
+      <style>
+        .ba3-wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+        .ba3-head { text-align: center; max-width: 680px; margin: 0 auto 52px; }
+        .ba3-eyebrow { color: var(--secondary); font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+        .ba3-head h2 { font-size: 40px; line-height: 1.1; margin: 14px 0 0; color: var(--primary); font-weight: 800; letter-spacing: -0.02em; }
+        .ba3-head p { color: var(--text-2); font-size: 17px; line-height: 1.55; margin: 16px auto 0; }
+        .ba3-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: stretch; }
+        .ba3-card { border-radius: 22px; padding: 24px; border: 1px solid var(--border); background: #fff; display: flex; flex-direction: column; }
+        .ba3-card.before { background: var(--bad-bg); border-color: #f3d6d3; }
+        .ba3-card.after { background: var(--good-bg); border-color: #cdeed8; box-shadow: 0 24px 60px rgba(31, 157, 99, 0.12); }
+        .ba3-tag { font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+        .ba3-card.before .ba3-tag { color: var(--bad); }
+        .ba3-card.after .ba3-tag { color: var(--good); }
+        /* ---- PDP page mockup ---- */
+        .pdpx { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 8px 22px rgba(27, 27, 27, 0.06); }
+        .pdpx-bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: #f1f1f4; border-bottom: 1px solid var(--border); }
+        .pdpx-bar i { width: 8px; height: 8px; border-radius: 50%; background: #d2d2dc; display: block; }
+        .pdpx-url { margin-left: 8px; font-size: 10.5px; color: #9a9aa6; background: #fff; border-radius: 5px; padding: 3px 10px; flex: 1; font-family: ui-monospace, Menlo, monospace; }
+        .pdpx-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 14px; }
+        .pdpx-media { display: flex; flex-direction: column; gap: 8px; }
+        .pdpx-img { position: relative; aspect-ratio: 1 / 1; border-radius: 8px; overflow: hidden; background: #0f0f14; }
+        .pdpx-img img { width: 100%; height: 100%; object-fit: cover; }
+        .ba3-card.before .pdpx-img img { filter: grayscale(0.22) brightness(0.92); }
+        .pdpx-play { position: absolute; inset: 0; margin: auto; width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.93); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3); }
+        .pdpx-play:after { content: ""; border-style: solid; border-width: 7px 0 7px 11px; border-color: transparent transparent transparent var(--secondary); margin-left: 2px; }
+        .pdpx-vbadge { position: absolute; top: 8px; left: 8px; background: var(--secondary); color: #fff; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 5px; letter-spacing: 0.04em; }
+        .pdpx-thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .pdpx-thumbs i { aspect-ratio: 1 / 1; border-radius: 5px; background: #ececf1; background-size: cover; background-position: center; display: block; }
+        .pdpx-info { display: flex; flex-direction: column; gap: 8px; padding-top: 2px; }
+        .wfx { height: 9px; border-radius: 5px; background: #ebebf1; }
+        .wfx.title { height: 13px; width: 85%; background: #dadae2; }
+        .wfx.price { height: 17px; width: 46%; background: #cdced8; }
+        .wfx.l1 { width: 95%; } .wfx.l2 { width: 72%; }
+        .wfx-stars { display: flex; gap: 3px; } .wfx-stars i { width: 9px; height: 9px; border-radius: 50%; background: #e2e2ea; }
+        .wfx-btn { margin-top: 5px; height: 30px; border-radius: 200px; background: #e0e0e8; }
+        .ba3-card.after .wfx-btn { background: var(--secondary); }
+        /* ---- analytics ---- */
+        .ba3-label { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-2); margin: 18px 0 2px; }
+        .ba3-metrics { display: flex; flex-direction: column; }
+        .ba3-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 14px; border-top: 1px solid rgba(0, 0, 0, 0.06); color: var(--text-2); }
+        .ba3-row:first-child { border-top: 0; }
+        .ba3-row b { font-weight: 800; font-size: 15px; color: var(--primary); display: inline-flex; align-items: center; gap: 6px; }
+        .ba3-row.dead b { color: #b6b6c0; font-weight: 600; }
+        .ba3-row.bad b { color: var(--bad); }
+        .ba3-row.good b { color: var(--good); }
+        .ba3-row.live b { color: var(--secondary); }
+        .ba3-row .up { font-size: 10px; }
+        .ba3-note { margin: 16px 0 0; font-size: 13px; line-height: 1.55; color: var(--text-2); }
+        @media (max-width: 820px) { .ba3-grid { grid-template-columns: 1fr; } .ba3-head h2 { font-size: 30px; } }
+      </style>
+      <div class="ba3-wrap">
+        <div class="ba3-head">
+          <div class="ba3-eyebrow">The gap</div>
+          <h2>Before GaanaAI vs After GaanaAI</h2>
+          <p>The same product page — one with a static image, one with a video. Watch what the marketplace can measure once the video is live.</p>
+        </div>
+        <div class="ba3-grid">
+          <div class="ba3-card before">
+            <span class="ba3-tag">Before · No video</span>
+            <div class="pdpx">
+              <div class="pdpx-bar"><i></i><i></i><i></i><span class="pdpx-url">yourstore.com/petlawn-seed-mix</span></div>
+              <div class="pdpx-cols">
+                <div class="pdpx-media">
+                  <div class="pdpx-img"><img src="assets/pdp-image.png" alt="Static product image" /></div>
+                  <div class="pdpx-thumbs">
+                    <i style="background-image: url('assets/pdp-image.png')"></i>
+                    <i style="background-image: url('assets/petlawn-pet.png')"></i>
+                    <i style="background-image: url('assets/petlawn-usa.png')"></i>
+                    <i style="background-image: url('assets/petlawn-collection.png')"></i>
+                  </div>
+                </div>
+                <div class="pdpx-info">
+                  <span class="wfx title"></span>
+                  <span class="wfx-stars"><i></i><i></i><i></i><i></i><i></i></span>
+                  <span class="wfx price"></span>
+                  <span class="wfx l1"></span>
+                  <span class="wfx l2"></span>
+                  <span class="wfx-btn"></span>
+                </div>
+              </div>
+            </div>
+            <div class="ba3-label">What the marketplace can measure</div>
+            <div class="ba3-metrics">
+              <div class="ba3-row dead"><span>Video views</span><b>No video</b></div>
+              <div class="ba3-row dead"><span>Avg. view duration</span><b>—</b></div>
+              <div class="ba3-row dead"><span>Views → conversion</span><b>—</b></div>
+              <div class="ba3-row bad"><span>PDP conversion</span><b>0.8%</b></div>
+            </div>
+            <p class="ba3-note">Just an image — nothing for shoppers to watch, and no engagement data in Seller Central or Shopify.</p>
+          </div>
+          <div class="ba3-card after">
+            <span class="ba3-tag">After · With video</span>
+            <div class="pdpx">
+              <div class="pdpx-bar"><i></i><i></i><i></i><span class="pdpx-url">yourstore.com/petlawn-seed-mix</span></div>
+              <div class="pdpx-cols">
+                <div class="pdpx-media">
+                  <div class="pdpx-img">
+                    <span class="pdpx-vbadge">▶ VIDEO</span>
+                    <img src="assets/pdp-video-thumb.png" alt="Product video" />
+                    <div class="pdpx-play"></div>
+                  </div>
+                  <div class="pdpx-thumbs">
+                    <i style="background-image: url('assets/pdp-video-thumb.png')"></i>
+                    <i style="background-image: url('assets/petlawn-pet.png')"></i>
+                    <i style="background-image: url('assets/petlawn-usa.png')"></i>
+                    <i style="background-image: url('assets/petlawn-collection.png')"></i>
+                  </div>
+                </div>
+                <div class="pdpx-info">
+                  <span class="wfx title"></span>
+                  <span class="wfx-stars"><i></i><i></i><i></i><i></i><i></i></span>
+                  <span class="wfx price"></span>
+                  <span class="wfx l1"></span>
+                  <span class="wfx l2"></span>
+                  <span class="wfx-btn"></span>
+                </div>
+              </div>
+            </div>
+            <div class="ba3-label">Live engagement, climbing</div>
+            <div class="ba3-metrics">
+              <div class="ba3-row live"><span>Video views</span><b>18,420 <i class="up">▲</i></b></div>
+              <div class="ba3-row live"><span>Avg. view duration</span><b>0:41</b></div>
+              <div class="ba3-row live"><span>Views → conversion</span><b>9.2% <i class="up">▲</i></b></div>
+              <div class="ba3-row good"><span>PDP conversion</span><b>2.9% <i class="up">▲</i></b></div>
+            </div>
+            <p class="ba3-note">Amazon &amp; Shopify start tracking views, watch time, and view-to-conversion — and every number moves up.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REASONS ============ -->
+    <section class="section reasons-sec">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow" style="color: #b794ff">Why it's happening</div>
+          <h2>The reasons your PDPs aren't converting.</h2>
+          <p>Every one of these shows up in the data. None of them are about traffic.</p>
+        </div>
+        <div class="reasons">
+          <div class="reason"><div class="ico">🗑</div><h4>AI slop</h4><p>Every AI clip looks the same. Shoppers thumb past in two seconds.</p></div>
+          <div class="reason"><div class="ico">▦</div><h4>Templated outputs</h4><p>Same six transitions, same stock music. Your brand looks like everyone else's.</p></div>
+          <div class="reason"><div class="ico">⬡</div><h4>Product drift</h4><p>Logos morph. Colors shift. Legal flags it. You can't ship it.</p></div>
+          <div class="reason"><div class="ico">↩</div><h4>"Doesn't match photos"</h4><p>Top return reason in your category. Refunds eat 23% of effective margin.</p></div>
+          <div class="reason"><div class="ico">⇄</div><h4>Carousel scroll-by</h4><p>Shoppers swipe through three images and bounce. Your hero asset barely gets watched.</p></div>
+          <div class="reason"><div class="ico">✕</div><h4>Ad-to-PDP gap</h4><p>Your ad sells one story, your PDP shows another. Paid traffic burns on impact.</p></div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section how" id="how">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">How it works</div>
+          <h2>From product URL to live video.</h2>
+        </div>
+        <div class="how-steps">
+          <div class="how-step">
+            <div class="how-num">01</div>
+            <h4>Send a product URL</h4>
+            <p>Drop your PDP link or product photos. That's all we need to start — no brief, no shoot.</p>
+            <span class="tag">Upload in minutes</span>
+          </div>
+          <div class="how-step">
+            <div class="how-num">02</div>
+            <h4>We produce + human QA</h4>
+            <p>Our engine builds the video and a human checks every frame for brand and product accuracy.</p>
+            <span class="tag">24hr delivery</span>
+          </div>
+          <div class="how-step">
+            <div class="how-num">03</div>
+            <h4>Publish-ready video</h4>
+            <p>Download platform-optimized video, ready for your store, Amazon, and social — in 24 hours.</p>
+            <span class="tag">Multi-channel ready</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SAMPLES ============ -->
+    <section class="section samples" id="samples">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Sample work</div>
+          <h2>Two samples, no pitch deck needed.</h2>
+          <p>See it on a real product before you commit to anything.</p>
+        </div>
+        <div class="sample-grid">
+          <div class="sample-card">
+            <div class="sample-media">
+              <img src="assets/pdp-video-thumb.png" alt="PetLawn Seed Mix product video" />
+              <div class="sample-play"></div>
+            </div>
+            <div class="sample-body">
+              <h4>PetLawn Seed Mix — Product Video</h4>
+              <p>Lifestyle hero video built from a single product URL.</p>
+            </div>
+          </div>
+          <div class="sample-card">
+            <div class="sample-media">
+              <img src="assets/petlawn-collection.png" alt="Earthwise seed collection batch" />
+              <div class="sample-play"></div>
+            </div>
+            <div class="sample-body">
+              <h4>Earthwise Collection — 9-SKU Batch</h4>
+              <p>Consistent, on-brand videos across an entire catalog.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROCESS ============ -->
+    <section class="section" id="process" style="background: #fff">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Our process</div>
+          <h2>What happens after you send a URL.</h2>
+          <p>A managed service end to end — you send one link, we handle the rest.</p>
+        </div>
+        <div class="proc-grid">
+          <div class="proc">
+            <div class="n">1</div>
+            <h4>Intake &amp; brief</h4>
+            <p>We pull your product, packaging, and brand details straight from the URL you send.</p>
+          </div>
+          <div class="proc">
+            <div class="n">2</div>
+            <h4>Production</h4>
+            <p>Our engine builds an on-brand, product-accurate video tailored to the SKU.</p>
+          </div>
+          <div class="proc">
+            <div class="n">3</div>
+            <h4>Human QA</h4>
+            <p>A human reviews every frame for product accuracy and brand compliance before anything ships.</p>
+          </div>
+          <div class="proc">
+            <div class="n">4</div>
+            <h4>Compliant export</h4>
+            <p>Platform-ready files for your store, Amazon, and social — delivered in under 24 hours.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="final" id="get">
+      <div class="wrap">
+        <div class="final-card">
+          <h2>Your next high-converting PDP video is 24 hours away.</h2>
+          <p>Pick a hero SKU. We'll make the video, free.</p>
+          <div class="row">
+            <a class="btn btn-light" href="https://getgaana.com/book-demo">Book a demo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER (matches main site) ============ -->
+    <footer class="footer2">
+      <div class="wrap">
+        <div class="footer2-main">
+          <div class="footer2-brand">
+            <img src="logo.svg" alt="GaanaAI" />
+            <p>AI-native video agency for brands. Production-ready videos, delivered.</p>
+            <div class="footer2-social">
+              <a href="https://www.youtube.com/@getGaanaAI" target="_blank" title="YouTube"><svg fill="currentColor" height="14" viewBox="0 0 24 24" width="14"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 00.5 6.2 31.3 31.3 0 000 12a31.3 31.3 0 00.5 5.8 3 3 0 002.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 002.1-2.1A31.3 31.3 0 0024 12a31.3 31.3 0 00-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"></path></svg></a>
+              <a href="https://www.linkedin.com/company/gaana-ai/" target="_blank" title="LinkedIn"><svg fill="currentColor" height="14" viewBox="0 0 24 24" width="14"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05a3.74 3.74 0 013.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77A1.75 1.75 0 000 1.73v20.54A1.75 1.75 0 001.77 24h20.45A1.75 1.75 0 0024 22.27V1.73A1.75 1.75 0 0022.22 0z"></path></svg></a>
+              <a href="https://x.com/GaanaAI" target="_blank" title="X"><svg fill="currentColor" height="14" viewBox="0 0 24 24" width="14"><path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.4l-5.8-7.58-6.63 7.58H.49l8.6-9.83L0 1.15h7.59l5.24 6.93 6.07-6.93zm-1.29 19.5h2.04L6.48 3.24H4.3l13.31 17.41z"></path></svg></a>
+              <a href="https://www.instagram.com/getgaana_ai/?hl=en" target="_blank" title="Instagram"><svg fill="currentColor" height="14" viewBox="0 0 24 24" width="14"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85 0-3.2.01-3.58.07-4.85C2.38 3.92 3.9 2.38 7.15 2.23 8.42 2.18 8.8 2.16 12 2.16zM12 0C8.74 0 8.33.01 7.05.07 2.7.27.27 2.7.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.35 2.7 6.85 7.05 7.05 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c4.35-.2 6.85-2.7 7.05-7.05.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.7-6.85-7.05-7.05C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 100 12.32 6.16 6.16 0 000-12.32zM12 16a4 4 0 110-8 4 4 0 010 8zm6.4-10.4a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z"></path></svg></a>
+            </div>
+          </div>
+          <div class="footer2-col">
+            <h3>Product</h3>
+            <a href="https://getgaana.com/case-studies">Case Studies</a>
+            <a href="https://getgaana.com/sample-outputs">Sample Videos</a>
+            <a href="https://getgaana.com/resources">Resources</a>
+          </div>
+          <div class="footer2-col">
+            <h3>Company</h3>
+            <a href="https://getgaana.com/about">About</a>
+            <a href="https://getgaana.com/book-demo">Book a Demo</a>
+            <a href="https://getgaana.com/contact">Contact</a>
+          </div>
+          <div class="footer2-col">
+            <h3>Legal</h3>
+            <a href="https://getgaana.com/terms">Terms &amp; Conditions</a>
+            <a href="https://getgaana.com/privacy">Privacy Policy</a>
+            <a href="https://getgaana.com/sitemap.xml">Sitemap</a>
+          </div>
+        </div>
+        <div class="footer2-bottom">
+          <span>© 2026 GaanaAI. All rights reserved.</span>
+          <span>Human + Agentic AI</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ===== free-video request modal ===== -->
+    <style>
+      .vm-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(8, 6, 16, 0.74); backdrop-filter: blur(7px); display: none; align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+      .vm-overlay.open { display: flex; opacity: 1; }
+      .vm { position: relative; width: 100%; max-width: 520px; padding: 44px 42px; text-align: center; border-radius: 24px; overflow: hidden; background: linear-gradient(165deg, #1d1533, #110c20); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 40px 110px rgba(0, 0, 0, 0.6); color: #fff; font-family: "Inter", system-ui, sans-serif; transform: translateY(18px) scale(0.95); opacity: 0; transition: transform 0.42s cubic-bezier(0.2, 0.85, 0.25, 1), opacity 0.42s; }
+      .vm-overlay.open .vm { transform: none; opacity: 1; }
+      .vm::before { content: ""; position: absolute; top: -130px; left: 50%; transform: translateX(-50%); width: 440px; height: 320px; background: radial-gradient(circle, rgba(122, 51, 255, 0.5), transparent 65%); pointer-events: none; filter: blur(12px); }
+      .vm-body { position: relative; z-index: 1; }
+      .vm h3 { font-size: 23px; font-weight: 800; margin: 0 0 8px; letter-spacing: -0.01em; }
+      .vm p { font-size: 14.5px; color: rgba(255, 255, 255, 0.6); line-height: 1.5; margin: 0 0 2px; max-width: 360px; margin-left: auto; margin-right: auto; }
+      .vm-close { position: absolute; top: 15px; right: 16px; z-index: 3; width: 30px; height: 30px; border-radius: 50%; background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.6); border: 0; cursor: pointer; font-size: 17px; line-height: 1; }
+      .vm-close:hover { background: rgba(255, 255, 255, 0.16); color: #fff; }
+      /* orbital loader */
+      .vm-orbit { position: relative; width: 112px; height: 112px; margin: 8px auto 30px; }
+      .vm-orbit .ring { position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.08); }
+      .vm-orbit .arc { position: absolute; inset: 0; border-radius: 50%; border: 3px solid transparent; border-top-color: #7a33ff; border-right-color: #f24cf3; animation: vmspin 0.9s linear infinite; }
+      .vm-orbit .arc2 { position: absolute; inset: 12px; border-radius: 50%; border: 2px solid transparent; border-bottom-color: #b794ff; animation: vmspin 1.5s linear infinite reverse; }
+      .vm-orbit .core { position: absolute; inset: 0; margin: auto; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 0 20px rgba(183, 148, 255, 0.95); animation: vmpulse 1.2s ease-in-out infinite; }
+      @keyframes vmspin { to { transform: rotate(360deg); } }
+      @keyframes vmpulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.55); opacity: 0.55; } }
+      .vm-status { height: 20px; font-size: 13px; color: #c4abff; font-weight: 600; margin: 14px 0 14px; transition: opacity 0.25s; letter-spacing: 0.02em; }
+      .vm-bar { height: 6px; border-radius: 200px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+      .vm-bar i { display: block; height: 100%; width: 4%; border-radius: 200px; background: linear-gradient(90deg, #7a33ff, #f24cf3); box-shadow: 0 0 12px rgba(122, 51, 255, 0.7); }
+      .vm-url { font-size: 12px; color: #cbb4ff; background: rgba(122, 51, 255, 0.16); border: 1px solid rgba(122, 51, 255, 0.3); border-radius: 200px; padding: 6px 14px; display: inline-block; margin-top: 18px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .vm-target-cap { font-size: 11px; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; text-align: left; margin-bottom: 6px; }
+      .vm-target { display: flex; align-items: center; gap: 10px; background: rgba(122, 51, 255, 0.12); border: 1px solid rgba(122, 51, 255, 0.3); border-radius: 200px; padding: 9px 16px 9px 12px; margin: 0 0 18px; }
+      .vm-target:focus-within { border-color: #7a33ff; box-shadow: 0 0 0 3px rgba(122, 51, 255, 0.22); }
+      .vm-target-ico { width: 30px; height: 30px; border-radius: 50%; background: rgba(122, 51, 255, 0.28); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; color: #cbb4ff; }
+      .vm-url-input { flex: 1; background: transparent; border: 0; outline: 0; color: #fff; font-size: 14px; font-family: inherit; min-width: 0; }
+      .vm-target-u { flex: 1; font-size: 13.5px; color: #fff; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; text-align: left; }
+      @keyframes vmShake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+      .vm-shake { animation: vmShake 0.4s; }
+      .hero-form button:disabled, .hero-url-form button:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none !important; transform: none !important; }
+      .vm-url-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+      .vm-list { list-style: none; padding: 0; margin: 18px auto 22px; display: flex; flex-direction: column; gap: 10px; text-align: left; width: fit-content; }
+      .vm-list li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: rgba(255, 255, 255, 0.82); }
+      .vm-list li:before { content: "✓"; flex-shrink: 0; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; background: rgba(40, 214, 132, 0.16); color: #28d684; font-weight: 800; font-size: 12px; border-radius: 50%; }
+      .vm-done-btn { margin-top: 4px; border: 0; background: #7a33ff; color: #fff; border-radius: 200px; padding: 13px 40px; font-weight: 700; font-size: 14px; cursor: pointer; font-family: inherit; transition: transform 0.15s, box-shadow 0.15s; }
+      .vm-done-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(122, 51, 255, 0.5); }
+      /* success */
+      .vm-check { position: relative; width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(135deg, #28d684, #1f9d63); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; margin: 6px auto 20px; animation: vmpop 0.5s cubic-bezier(0.2, 1.5, 0.4, 1), vmburst 1.1s ease-out 0.1s; }
+      @keyframes vmpop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+      @keyframes vmburst { 0% { box-shadow: 0 0 0 0 rgba(40, 214, 132, 0.5); } 100% { box-shadow: 0 0 0 28px rgba(40, 214, 132, 0); } }
+      /* dark email form */
+      .vm-form { display: flex; gap: 14px; align-items: center; max-width: 440px; margin: 4px auto 0; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 200px; padding: 5px 5px 5px 22px; transition: border-color 0.15s, box-shadow 0.15s; }
+      .vm-form:focus-within { border-color: #7a33ff; box-shadow: 0 0 0 3px rgba(122, 51, 255, 0.22); }
+      .vm-form input { flex: 1; min-width: 0; background: transparent; border: 0; outline: none; color: #fff; font-size: 14px; font-family: inherit; }
+      .vm-form input::placeholder { color: rgba(255, 255, 255, 0.4); }
+      .vm-form button { flex-shrink: 0; border: 0; background: #7a33ff; color: #fff; border-radius: 200px; padding: 12px 22px; font-weight: 700; font-size: 14px; cursor: pointer; font-family: inherit; white-space: nowrap; transition: transform 0.15s, box-shadow 0.15s; }
+      .vm-form button:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(122, 51, 255, 0.5); }
+      .vm-fade { animation: vmfadein 0.45s ease; }
+      @keyframes vmfadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    </style>
+    <div class="vm-overlay" id="vmOverlay">
+      <div class="vm">
+        <button class="vm-close" id="vmClose" aria-label="Close">&times;</button>
+        <div class="vm-body" id="vmBody"></div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var overlay = document.getElementById("vmOverlay");
+        var body = document.getElementById("vmBody");
+        if (!overlay || !body) return;
+        var STEPS = ["Saving your product page…", "Locking in your brief…", "Submitting to our team…"];
+        var timers = [];
+        function clearTimers() { timers.forEach(clearInterval); timers.forEach(clearTimeout); timers = []; }
+        function esc(s) { return (s || "").replace(/[<>&"]/g, function (c) { return { "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]; }); }
+        function emailStep(u) {
+          body.className = "vm-body vm-fade";
+          body.innerHTML = '<div class="vm-target-cap">Your product page</div><div class="vm-target"><span class="vm-target-ico">\ud83d\udd17</span><span class="vm-target-u">' + esc(u) + '</span></div><h3>Get your free video</h3><p>Enter your email and we’ll send your finished video within 24 hours.</p><ul class="vm-list"><li>Product-accurate, on-brand video</li><li>Ready for Amazon, Shopify &amp; social</li><li>Delivered within 24 hours</li></ul><form class="vm-form" id="vmEmail"><input type="email" required placeholder="you@company.com" aria-label="Email" /><button type="submit">Get my video →</button></form>';
+          var ef = document.getElementById("vmEmail");
+          ef.addEventListener("submit", function (e) { e.preventDefault(); processing(u); });
+          ef.querySelector("input").focus();
+        }
+        function processing(u) {
+          body.className = "vm-body vm-fade";
+          body.innerHTML = '<div class="vm-orbit"><div class="ring"></div><div class="arc"></div><div class="arc2"></div><div class="core"></div></div><h3>Sending your request…</h3><div class="vm-status" id="vmStatus">' + STEPS[0] + '</div><div class="vm-bar"><i id="vmBar"></i></div>' + (u ? '<div class="vm-url">' + esc(u) + "</div>" : "");
+          var bar = document.getElementById("vmBar"), st = document.getElementById("vmStatus");
+          requestAnimationFrame(function () { bar.style.transition = "width 5s linear"; bar.style.width = "100%"; });
+          var i = 0;
+          timers.push(setInterval(function () { i++; if (i < STEPS.length) { st.style.opacity = 0; timers.push(setTimeout(function () { st.textContent = STEPS[i]; st.style.opacity = 1; }, 200)); } }, 1250));
+          timers.push(setTimeout(doneStep, 5000));
+        }
+        function doneStep() {
+          clearTimers();
+          body.className = "vm-body vm-fade";
+          body.innerHTML = '<div class="vm-check">✓</div><h3>We’ve got your brief!</h3><p>Your video is on the way — we’ll email it to you within 24 hours.</p><button class="vm-done-btn" id="vmDone">Got it</button>';
+          var db = document.getElementById("vmDone"); db.addEventListener("click", closeM); db.focus();
+        }
+        function openM(u) { overlay.classList.add("open"); emailStep(u); }
+        function closeM() { overlay.classList.remove("open"); clearTimers(); }
+        overlay.addEventListener("click", function (e) { if (e.target === overlay) closeM(); });
+        document.getElementById("vmClose").addEventListener("click", closeM);
+        document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeM(); });
+        document.querySelectorAll(".hero-form, .hero-url-form").forEach(function (f) {
+          var i = f.querySelector("input");
+          var btn = f.querySelector("button");
+          function sync() { if (btn) btn.disabled = !(i && i.value.trim()); }
+          if (i) i.addEventListener("input", sync);
+          sync();
+          f.addEventListener("submit", function (e) { e.preventDefault(); var v = i ? i.value.trim() : ""; if (!v) { if (i) i.focus(); return; } openM(v); });
+        });
+        if (/[?#]demo/.test(location.href)) openM("yourstore.com/your-product");
+      })();
+    </script>
+  </body>
+</html>
