@@ -747,6 +747,10 @@
       .fz-form input:focus { border-color: #7a33ff; box-shadow: 0 0 0 3px rgba(122, 51, 255, 0.22); }
       .fz-form button { flex-shrink: 0; border: 0; background: #7a33ff; color: #fff; border-radius: 200px; padding: 13px 26px; font-weight: 700; font-size: 14px; cursor: pointer; font-family: inherit; white-space: nowrap; transition: 0.15s; }
       .fz-form button:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(122, 51, 255, 0.5); }
+      .fz-form2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .fz-form2 button { grid-column: 1 / -1; }
+      .fz-trust { font-size: 11.5px; color: rgba(255, 255, 255, 0.45); }
+      @media (max-width: 560px) { .fz-form2 { grid-template-columns: 1fr; } }
       /* ---- success ---- */
       .fz-check { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #28d684, #1f9d63); display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 22px; animation: fzpop 0.5s cubic-bezier(0.2, 1.5, 0.4, 1); }
       .fz-btnrow { display: flex; gap: 12px; justify-content: center; margin-top: 10px; }
@@ -777,13 +781,14 @@
         function setProg(p) { var t = byId("fzTprog"); if (t) t.style.width = p + "%"; }
         var ORBIT = '<div class="fz-orbit"><div class="r"></div><div class="a"></div><div class="a2"></div><div class="c"></div></div>';
         var USAGE = ["Amazon / marketplaces", "Shopify / DTC PDP", "Meta & TikTok ads", "Website hero", "Email & retention"];
-        var GOALS = ["More conversions", "Higher ad ROAS", "Fewer returns", "Scale my catalog"];
-        var SKUS = ["1 hero SKU", "2–10 SKUs", "11–50 SKUs", "50+ SKUs"];
+        var SKUS = ["Just 1 hero SKU", "2–10 products", "11–50 products", "50+ products"];
+        var TIMING = ["Ready to start now", "Within this month", "Next quarter", "Just exploring"];
         var QUESTIONS = [
-          { key: "usage", multi: true, title: "Where will you use this video?", hint: "Pick all that apply", opts: USAGE },
-          { key: "goal", multi: false, title: "What’s your main goal?", hint: "Tap one to continue", opts: GOALS },
-          { key: "skus", multi: false, title: "How many products do you sell?", hint: "Tap one to continue", opts: SKUS }
+          { key: "usage", multi: true, title: "Where will you use these videos?", hint: "Pick all that apply", opts: USAGE },
+          { key: "skus", multi: false, title: "How big is your catalog?", hint: "Helps us scope your project", opts: SKUS },
+          { key: "timing", multi: false, title: "When do you want this live?", hint: "Tap one to continue", opts: TIMING }
         ];
+        function isHot() { return state.skus === "11–50 products" || state.skus === "50+ products" || state.timing === "Ready to start now" || state.timing === "Within this month"; }
         var state = {};
         function parseBrand(u) {
           var host = (u || "").trim().replace(/^[a-z][a-z0-9+.\-]*:\/\//i, "").replace(/^\/+/, "").replace(/^www\./i, "").split(/[\/?#]/)[0] || "your brand";
@@ -801,7 +806,7 @@
         /* ---- open + persistent top bar ---- */
         function openM(u) {
           var b = parseBrand(u);
-          state = { url: u, host: b.host, brand: b.brand, mono: b.mono, sw: b.sw, grad: b.grad, tones: b.tones, usage: [], goal: null, skus: null, analyzed: false, email: null };
+          state = { url: u, host: b.host, brand: b.brand, mono: b.mono, sw: b.sw, grad: b.grad, tones: b.tones, usage: [], skus: null, timing: null, name: "", analyzed: false, email: null };
           overlay.classList.add("open");
           panel.innerHTML =
             '<div class="fz-top">' +
@@ -889,7 +894,8 @@
         function renderKit() {
           stage = "kit";
           setProg(94);
-          var parts = [].concat(state.usage); if (state.goal) parts.push(state.goal); if (state.skus) parts.push(state.skus);
+          var hot = isHot();
+          var parts = [].concat(state.usage); if (state.skus) parts.push(state.skus); if (state.timing) parts.push(state.timing);
           var sum = parts.map(function (s) { return '<span class="s">' + esc(s) + "</span>"; }).join("") || '<span class="s">Free product video</span>';
           main.innerHTML =
             '<div class="fz-wide fade">' +
@@ -906,15 +912,16 @@
                   '<div class="fz-label" style="margin-top:20px">Suggested video script</div>' +
                   '<div class="fz-acc" id="fzAcc"><div class="fz-acc-head" id="fzAccH"><span>📝 4-shot script</span><span class="ch">›</span></div><div class="fz-acc-body"><div class="fz-acc-in" id="fzScript"><span class="skel-line" style="display:block;width:92%;margin-bottom:10px"></span><span class="skel-line" style="display:block;width:80%;margin-bottom:10px"></span><span class="skel-line" style="display:block;width:64%"></span></div></div></div>' +
                 '</div>' +
-                '<div class="fz-submit"><div><h3>Get your free ' + esc(state.brand) + ' video</h3><p>We’ll produce it on-brand and email it within 24 hours.</p></div>' +
+                '<div class="fz-submit"><div><h3>' + (hot ? 'Let’s build your ' + esc(state.brand) + ' video catalog' : 'Get your free ' + esc(state.brand) + ' video') + '</h3><p>' + (hot ? 'Tell us where to send your free sample — a video strategist will follow up to scope the full set.' : 'Drop your work email and we’ll deliver your finished, on-brand video within 24 hours.') + '</p></div>' +
                   '<div class="fz-summary">' + sum + "</div>" +
-                  '<form class="fz-form" id="fzForm"><input type="email" required placeholder="you@company.com" aria-label="Email" /><button type="submit">Submit request →</button></form>' +
+                  '<form class="fz-form fz-form2" id="fzForm"><input type="text" id="fzName" placeholder="First name" aria-label="First name" /><input type="email" id="fzEmail" required placeholder="Work email" aria-label="Work email" /><button type="submit">' + (hot ? 'Get sample + book a call →' : 'Get my free video →') + '</button></form>' +
+                  '<div class="fz-trust">🔒 Free &amp; no commitment · trusted by 200+ D2C brands · no credit card</div>' +
                 '</div>' +
               "</div>" +
             "</div>";
           byId("fzAccH").addEventListener("click", function () { byId("fzAcc").classList.toggle("open"); });
           var form = byId("fzForm");
-          form.addEventListener("submit", function (e) { e.preventDefault(); state.email = form.querySelector("input").value.trim(); renderSubmitting(); });
+          form.addEventListener("submit", function (e) { e.preventDefault(); var em = byId("fzEmail"); var nm = byId("fzName"); state.email = em ? em.value.trim() : ""; state.name = nm ? nm.value.trim() : ""; renderSubmitting(); });
           setProg(100);
           timers.push(setTimeout(fillKit, 1600));
         }
@@ -938,9 +945,20 @@
         }
         function renderDone() {
           stage = "done";
-          main.innerHTML = '<div class="fz-center fade"><div class="fz-check">✓</div><h2 class="fz-q-title">Request submitted 🎉</h2>' +
-            '<p class="fz-q-hint">We’ll have your free, on-brand video for <b style="color:#fff">' + esc(state.brand) + "</b> ready within 24 hours" + (state.email ? " — sent to " + esc(state.email) : "") + '.</p>' +
-            '<div class="fz-btnrow"><a class="fz-btn p" href="https://getgaana.com/book-demo">Book a strategy call</a><button type="button" class="fz-btn g" id="fzDoneBtn">Done</button></div></div>';
+          var hot = isHot();
+          var greet = state.name ? esc(state.name) + ", " : "";
+          var sentTo = state.email ? " at " + esc(state.email) : "";
+          var html;
+          if (hot) {
+            html = '<div class="fz-check">✓</div><h2 class="fz-q-title">You’re in 🎉</h2>' +
+              '<p class="fz-q-hint">' + greet + 'your free <b style="color:#fff">' + esc(state.brand) + '</b> sample is in production. A video strategist will reach out' + sentTo + ' within a few hours to scope your full catalog — grab a time now so you skip the wait:</p>' +
+              '<div class="fz-btnrow"><a class="fz-btn p" href="https://getgaana.com/book-demo">Book your strategy call →</a><button type="button" class="fz-btn g" id="fzDoneBtn">I’ll wait for the email</button></div>';
+          } else {
+            html = '<div class="fz-check">✓</div><h2 class="fz-q-title">Request submitted 🎉</h2>' +
+              '<p class="fz-q-hint">' + greet + 'we’ll have your free, on-brand <b style="color:#fff">' + esc(state.brand) + '</b> video ready within 24 hours' + sentTo + '. Want more SKUs or a faster turnaround? Talk to us:</p>' +
+              '<div class="fz-btnrow"><a class="fz-btn p" href="https://getgaana.com/book-demo">Book a strategy call</a><button type="button" class="fz-btn g" id="fzDoneBtn">Done</button></div>';
+          }
+          main.innerHTML = '<div class="fz-center fade">' + html + '</div>';
           byId("fzDoneBtn").addEventListener("click", closeM);
         }
         function closeM() { overlay.classList.remove("open"); ct(); stage = ""; }
