@@ -648,138 +648,98 @@
 
     <!-- ===== free-video request modal ===== -->
     <style>
-      .vm-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(8, 6, 16, 0.8); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 22px; opacity: 0; transition: opacity 0.3s ease; }
+      .vm-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(17, 13, 28, 0.5); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 24px; opacity: 0; transition: opacity 0.25s ease; }
       .vm-overlay.open { display: flex; opacity: 1; }
-      .fz { position: relative; width: 100%; max-width: 1180px; height: 94vh; display: flex; flex-direction: column; background: linear-gradient(170deg, #1b1430, #100b1d); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; overflow: hidden; box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6); color: #fff; font-family: "Inter", system-ui, sans-serif; transform: translateY(16px) scale(0.985); opacity: 0; transition: transform 0.4s cubic-bezier(0.2, 0.85, 0.25, 1), opacity 0.4s; }
-      .vm-overlay.open .fz { transform: none; opacity: 1; }
-      /* ---- top bar (persistent brand analysis) ---- */
-      .fz-top { position: relative; z-index: 3; display: flex; align-items: center; gap: 16px; padding: 15px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.02); flex-shrink: 0; }
-      .fz-logo { width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; color: #fff; }
-      .fz-bmeta { min-width: 0; }
-      .fz-bname { font-size: 16px; font-weight: 800; color: #fff; min-height: 19px; display: flex; align-items: center; }
-      .fz-babout { font-size: 12.5px; color: rgba(255, 255, 255, 0.55); margin-top: 5px; min-height: 15px; max-width: 380px; display: flex; align-items: center; }
-      .fz-url { font-size: 11.5px; color: #cbb4ff; background: rgba(122, 51, 255, 0.16); border: 1px solid rgba(122, 51, 255, 0.3); border-radius: 200px; padding: 4px 12px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .fz-status { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #c4abff; background: rgba(122, 51, 255, 0.14); border: 1px solid rgba(122, 51, 255, 0.28); border-radius: 200px; padding: 7px 14px; white-space: nowrap; }
-      .fz-status.done { color: #28d684; background: rgba(40, 214, 132, 0.12); border-color: rgba(40, 214, 132, 0.3); }
-      .fz-status .fz-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: fzpulse 1s ease-in-out infinite; }
-      .fz-status.done .fz-dot { animation: none; }
-      .fz-close { width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.7); border: 0; cursor: pointer; font-size: 18px; line-height: 1; flex-shrink: 0; }
-      .fz-close:hover { background: rgba(255, 255, 255, 0.16); color: #fff; }
-      .fz-tprog { height: 2px; background: rgba(255, 255, 255, 0.07); flex-shrink: 0; position: relative; z-index: 3; }
-      .fz-tprog i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #7a33ff, #f24cf3); transition: width 0.6s ease; }
-      /* ---- main ---- */
-      .fz-main { position: relative; flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
-      .fz-main::before { content: ""; position: absolute; top: -120px; left: 50%; transform: translateX(-50%); width: 620px; height: 380px; background: radial-gradient(circle, rgba(122, 51, 255, 0.3), transparent 65%); pointer-events: none; }
-      .fz-center { position: relative; z-index: 1; margin: auto; width: 100%; max-width: 600px; padding: 44px 28px; }
-      .fz-wide { position: relative; z-index: 1; width: 100%; max-width: 980px; margin: 0 auto; padding: 38px 32px 56px; }
-      /* ---- skeleton ---- */
-      @keyframes fzshim { 100% { transform: translateX(100%); } }
-      @keyframes fzpulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
-      @keyframes fzspin { to { transform: rotate(360deg); } }
-      @keyframes fzpop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-      @keyframes fzfade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-      .fade { animation: fzfade 0.4s ease; }
-      .skel { position: relative; overflow: hidden; background: rgba(255, 255, 255, 0.08) !important; color: transparent !important; }
-      .skel::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent); animation: fzshim 1.25s infinite; }
-      .skel-line { display: inline-block; height: 12px; border-radius: 6px; background: rgba(255, 255, 255, 0.08); position: relative; overflow: hidden; vertical-align: middle; }
-      .skel-line::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent); animation: fzshim 1.25s infinite; }
-      .w120 { width: 130px; } .w200 { width: 230px; }
-      /* ---- questions ---- */
-      .fz-prog { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; justify-content: center; }
-      .fz-dots { display: flex; gap: 7px; }
-      .fz-dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.18); transition: 0.3s; }
-      .fz-dots i.on { background: #7a33ff; width: 22px; border-radius: 200px; box-shadow: 0 0 10px rgba(122, 51, 255, 0.8); }
-      .fz-dots i.done { background: #28d684; }
-      .fz-stepn { font-size: 12px; font-weight: 700; color: rgba(255, 255, 255, 0.45); }
-      .fz-q-title { font-size: 28px; font-weight: 800; letter-spacing: -0.01em; text-align: center; margin: 0 0 8px; line-height: 1.15; }
-      .fz-q-hint { font-size: 13.5px; color: rgba(255, 255, 255, 0.5); text-align: center; margin: 0 0 28px; }
-      .fz-chips { display: flex; flex-wrap: wrap; gap: 11px; justify-content: center; margin-bottom: 30px; }
-      .fz-chip { font-size: 14.5px; font-weight: 600; color: rgba(255, 255, 255, 0.8); background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 200px; padding: 12px 22px; cursor: pointer; font-family: inherit; transition: 0.15s; }
-      .fz-chip:hover { border-color: rgba(122, 51, 255, 0.6); color: #fff; }
-      .fz-chip.sel { background: #7a33ff; border-color: #7a33ff; color: #fff; box-shadow: 0 8px 20px rgba(122, 51, 255, 0.4); }
-      .fz-actions { display: flex; align-items: center; justify-content: center; gap: 16px; }
-      .fz-back { background: transparent; border: 0; color: rgba(255, 255, 255, 0.55); font-size: 14px; cursor: pointer; font-family: inherit; }
-      .fz-back:hover { color: #fff; }
-      .fz-cta { border: 0; background: #7a33ff; color: #fff; border-radius: 200px; padding: 14px 38px; font-weight: 700; font-size: 15px; cursor: pointer; font-family: inherit; transition: 0.15s; }
-      .fz-cta:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(122, 51, 255, 0.5); }
-      .fz-cta:disabled { opacity: 0.4; cursor: not-allowed; }
-      /* ---- loaders ---- */
-      .fz-orbit { position: relative; width: 116px; height: 116px; margin: 0 auto 26px; }
-      .fz-orbit .r { position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(255, 255, 255, 0.08); }
-      .fz-orbit .a { position: absolute; inset: 0; border-radius: 50%; border: 3px solid transparent; border-top-color: #7a33ff; border-right-color: #f24cf3; animation: fzspin 0.9s linear infinite; }
-      .fz-orbit .a2 { position: absolute; inset: 13px; border-radius: 50%; border: 2px solid transparent; border-bottom-color: #b794ff; animation: fzspin 1.5s linear infinite reverse; }
-      .fz-orbit .c { position: absolute; inset: 0; margin: auto; width: 13px; height: 13px; border-radius: 50%; background: #fff; box-shadow: 0 0 18px rgba(183, 148, 255, 0.9); animation: fzpulse 1.2s infinite; }
-      .fz-load-title { font-size: 22px; font-weight: 800; text-align: center; margin: 0 0 8px; }
-      .fz-load-sub { font-size: 13.5px; color: rgba(255, 255, 255, 0.5); text-align: center; min-height: 18px; }
-      /* ---- kit ---- */
-      .fz-kit-head { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #28d684; margin-bottom: 22px; }
-      .fz-tick { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: #28d684; color: #fff; font-size: 10px; font-weight: 800; }
-      .fz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; }
-      .fz-card { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.09); border-radius: 16px; padding: 22px; }
-      .fz-label { font-size: 11px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: rgba(255, 255, 255, 0.45); margin: 0 0 13px; }
-      .fz-about-txt { font-size: 14px; line-height: 1.6; color: rgba(255, 255, 255, 0.75); }
-      .fz-skrows .skel-line { display: block; height: 12px; margin-bottom: 11px; width: 100%; }
-      .fz-skrows .skel-line:last-child { width: 55%; margin-bottom: 0; }
-      .fz-swatches { display: flex; gap: 7px; }
-      .fz-swatches i { width: 30px; height: 30px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.14); }
-      .fz-tones { display: flex; flex-wrap: wrap; gap: 7px; }
-      .fz-tone { font-size: 11px; font-weight: 600; color: #cbb4ff; background: rgba(122, 51, 255, 0.16); border: 1px solid rgba(122, 51, 255, 0.3); border-radius: 200px; padding: 4px 11px; }
-      .fz-visuals { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-      .fz-vis { aspect-ratio: 3 / 4; border-radius: 10px; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 8px; }
-      .fz-vis span { position: relative; z-index: 1; font-size: 10px; font-weight: 700; color: #fff; background: rgba(0, 0, 0, 0.35); border-radius: 5px; padding: 2px 6px; }
-      .fz-acc { border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; overflow: hidden; }
-      .fz-acc-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer; font-size: 13.5px; font-weight: 700; background: rgba(255, 255, 255, 0.03); }
-      .fz-acc-head .ch { color: #c4abff; transition: transform 0.25s; font-size: 18px; }
-      .fz-acc.open .fz-acc-head .ch { transform: rotate(90deg); }
-      .fz-acc-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
-      .fz-acc.open .fz-acc-body { max-height: 480px; }
-      .fz-acc-in { padding: 2px 16px 14px; }
-      .fz-shot { padding: 9px 0; border-top: 1px solid rgba(255, 255, 255, 0.07); font-size: 12.5px; line-height: 1.55; color: rgba(255, 255, 255, 0.72); }
-      .fz-shot:first-child { border-top: 0; }
-      .fz-shot b { color: #c4abff; }
-      .fz-submit { grid-column: 1 / -1; background: rgba(122, 51, 255, 0.08); border: 1px solid rgba(122, 51, 255, 0.25); border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
-      .fz-submit h3 { margin: 0; font-size: 18px; font-weight: 800; }
-      .fz-submit p { margin: 4px 0 0; font-size: 13px; color: rgba(255, 255, 255, 0.6); }
-      .fz-summary { display: flex; flex-wrap: wrap; gap: 7px; }
-      .fz-summary .s { font-size: 11.5px; color: rgba(255, 255, 255, 0.72); background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 200px; padding: 5px 12px; }
-      .fz-form { display: flex; gap: 12px; }
-      .fz-form input { flex: 1; min-width: 0; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 200px; padding: 13px 20px; color: #fff; font-size: 14px; font-family: inherit; outline: none; }
-      .fz-form input:focus { border-color: #7a33ff; box-shadow: 0 0 0 3px rgba(122, 51, 255, 0.22); }
-      .fz-form button { flex-shrink: 0; border: 0; background: #7a33ff; color: #fff; border-radius: 200px; padding: 13px 26px; font-weight: 700; font-size: 14px; cursor: pointer; font-family: inherit; white-space: nowrap; transition: 0.15s; }
-      .fz-form button:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(122, 51, 255, 0.5); }
-      .fz-form2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-      .fz-form2 button { grid-column: 1 / -1; }
-      .fz-trust { font-size: 11.5px; color: rgba(255, 255, 255, 0.45); }
-      @media (max-width: 560px) { .fz-form2 { grid-template-columns: 1fr; } }
-      /* ---- success ---- */
-      .fz-check { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #28d684, #1f9d63); display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 22px; animation: fzpop 0.5s cubic-bezier(0.2, 1.5, 0.4, 1); }
-      .fz-btnrow { display: flex; gap: 12px; justify-content: center; margin-top: 10px; }
-      .fz-btn { border-radius: 200px; padding: 13px 26px; font-weight: 700; font-size: 14px; cursor: pointer; font-family: inherit; border: 1px solid transparent; text-decoration: none; display: inline-flex; align-items: center; transition: 0.15s; }
-      .fz-btn.p { background: #7a33ff; color: #fff; }
-      .fz-btn.p:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(122, 51, 255, 0.5); }
-      .fz-btn.g { background: transparent; color: #fff; border-color: rgba(255, 255, 255, 0.25); }
-      .fz-btn.g:hover { background: rgba(255, 255, 255, 0.08); }
-      @media (max-width: 820px) {
-        .fz { height: 96vh; max-width: 100%; }
-        .fz-grid { grid-template-columns: 1fr; }
-        .fz-url, .fz-babout { display: none; }
-        .fz-q-title { font-size: 23px; }
-      }
+      .sx { position: relative; width: 100%; max-width: 460px; max-height: 92vh; display: flex; flex-direction: column; background: #fff; color: #14121c; border-radius: 20px; overflow: hidden; box-shadow: 0 24px 70px rgba(20, 15, 40, 0.28); font-family: "Inter", system-ui, sans-serif; transform: translateY(12px) scale(0.98); opacity: 0; transition: transform 0.35s cubic-bezier(0.2, 0.85, 0.25, 1), opacity 0.35s, max-width 0.35s; }
+      .vm-overlay.open .sx { transform: none; opacity: 1; }
+      .sx.wide { max-width: 560px; }
+      .sx-prog { height: 3px; background: #f0eef5; flex-shrink: 0; }
+      .sx-prog i { display: block; height: 100%; width: 0; background: #7a33ff; border-radius: 0 3px 3px 0; transition: width 0.5s ease; }
+      .sx-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px 0; flex-shrink: 0; }
+      .sx-ctx { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: #6c6c78; background: #f7f7fb; border: 1px solid #ececef; border-radius: 200px; padding: 5px 12px; max-width: 78%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .sx-close { width: 30px; height: 30px; border-radius: 50%; background: #f4f4f7; border: 0; color: #8a8a95; cursor: pointer; font-size: 17px; line-height: 1; flex-shrink: 0; }
+      .sx-close:hover { background: #ececf1; color: #14121c; }
+      .sx-body { padding: 20px 26px 26px; overflow-y: auto; }
+      .sx-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #7a33ff; margin-bottom: 8px; }
+      .sx-h { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; margin: 0 0 8px; line-height: 1.2; }
+      .sx-sub { font-size: 14px; color: #6c6c78; line-height: 1.5; margin: 0 0 20px; }
+      .sx-input { width: 100%; box-sizing: border-box; border: 1px solid #e1e1e8; border-radius: 12px; padding: 14px 16px; font-size: 15px; font-family: inherit; color: #14121c; outline: none; transition: 0.15s; }
+      .sx-input:focus { border-color: #7a33ff; box-shadow: 0 0 0 3px rgba(122, 51, 255, 0.14); }
+      .sx-input::placeholder { color: #a6a6b0; }
+      .sx-btn { width: 100%; margin-top: 12px; border: 0; background: #7a33ff; color: #fff; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; transition: 0.15s; }
+      .sx-btn:hover:not(:disabled) { background: #6a28e6; }
+      .sx-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+      .sx-fine { font-size: 12px; color: #9a9aa4; margin: 14px 0 0; text-align: center; }
+      .sx-stepn { display: flex; align-items: center; gap: 11px; font-size: 12px; font-weight: 700; color: #a0a0aa; margin-bottom: 16px; }
+      .sx-back { border: 0; background: #f4f4f7; color: #8a8a95; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-size: 15px; line-height: 1; flex-shrink: 0; }
+      .sx-back:hover { background: #ececf1; color: #14121c; }
+      .sx-stepn .bar { flex: 1; height: 4px; background: #f0eef5; border-radius: 200px; overflow: hidden; }
+      .sx-stepn .bar i { display: block; height: 100%; background: #7a33ff; border-radius: 200px; }
+      .sx-opts { display: flex; flex-direction: column; gap: 9px; margin-bottom: 18px; }
+      .sx-opt { display: flex; align-items: center; gap: 12px; width: 100%; padding: 13px 15px; border: 1.5px solid #e6e6ec; border-radius: 12px; background: #fff; cursor: pointer; font-size: 14.5px; font-weight: 500; color: #14121c; text-align: left; font-family: inherit; transition: 0.15s; }
+      .sx-opt:hover { border-color: #c9b8ff; background: #faf8ff; }
+      .sx-opt.sel { border-color: #7a33ff; background: #f6f1ff; }
+      .sx-opt .lbl { flex: 1; }
+      .sx-opt .tk { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #d4d4dc; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #fff; transition: 0.15s; }
+      .sx-opt.sel .tk { background: #7a33ff; border-color: #7a33ff; }
+      .sx-center { text-align: center; padding: 14px 0; }
+      .sx-spin { width: 46px; height: 46px; border-radius: 50%; border: 3px solid #eee9f7; border-top-color: #7a33ff; animation: sxspin 0.8s linear infinite; margin: 8px auto 18px; }
+      @keyframes sxspin { to { transform: rotate(360deg); } }
+      .sx-checks { list-style: none; padding: 0; margin: 20px auto 0; max-width: 250px; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+      .sx-checks li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: #a0a0aa; transition: color 0.3s; }
+      .sx-checks li::before { content: ""; width: 16px; height: 16px; border-radius: 50%; border: 2px solid #e0e0e6; flex-shrink: 0; box-sizing: border-box; transition: 0.3s; }
+      .sx-checks li.done { color: #14121c; }
+      .sx-checks li.done::before { content: "✓"; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #fff; background: #1f9d63; border-color: #1f9d63; }
+      .sx-brandrow { display: flex; align-items: center; gap: 13px; padding-bottom: 18px; border-bottom: 1px solid #ececf1; margin-bottom: 18px; }
+      .sx-logo { width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; color: #fff; }
+      .sx-bname { font-size: 17px; font-weight: 800; }
+      .sx-bhost { font-size: 12.5px; color: #8a8a95; margin-top: 2px; }
+      .sx-badge { margin-left: auto; font-size: 11px; font-weight: 700; color: #1f9d63; background: #eaf7f0; border: 1px solid #cdeedd; border-radius: 200px; padding: 5px 11px; white-space: nowrap; }
+      .sx-block { margin-bottom: 18px; }
+      .sx-label { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #9a9aa4; margin: 0 0 10px; }
+      .sx-swatches { display: flex; gap: 6px; }
+      .sx-swatches i { width: 30px; height: 30px; border-radius: 8px; border: 1px solid #ececf1; }
+      .sx-tones { display: flex; flex-wrap: wrap; gap: 7px; }
+      .sx-tone { font-size: 11.5px; font-weight: 600; color: #7a33ff; background: #f4efff; border: 1px solid #e4d9ff; border-radius: 200px; padding: 4px 11px; }
+      .sx-visuals { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+      .sx-vis { aspect-ratio: 3 / 4; border-radius: 9px; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 7px; }
+      .sx-vis span { position: relative; z-index: 1; font-size: 9.5px; font-weight: 700; color: #fff; background: rgba(0, 0, 0, 0.32); border-radius: 5px; padding: 2px 6px; }
+      .sx-acc { border: 1px solid #ececf1; border-radius: 12px; overflow: hidden; margin-bottom: 18px; }
+      .sx-acc-h { display: flex; align-items: center; justify-content: space-between; padding: 13px 15px; cursor: pointer; font-size: 13.5px; font-weight: 700; }
+      .sx-acc-h .ch { color: #7a33ff; transition: transform 0.25s; font-size: 17px; }
+      .sx-acc.open .sx-acc-h .ch { transform: rotate(90deg); }
+      .sx-acc-b { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+      .sx-acc.open .sx-acc-b { max-height: 440px; }
+      .sx-acc-in { padding: 0 15px 12px; }
+      .sx-shot { padding: 8px 0; border-top: 1px solid #f0f0f4; font-size: 12.5px; line-height: 1.5; color: #55555f; }
+      .sx-shot:first-child { border-top: 0; }
+      .sx-shot b { color: #14121c; }
+      .sx-summary { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+      .sx-summary .s { font-size: 11.5px; color: #55555f; background: #f7f7fb; border: 1px solid #ececf1; border-radius: 200px; padding: 5px 11px; }
+      .sx-check { width: 64px; height: 64px; border-radius: 50%; background: #1f9d63; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 6px auto 18px; }
+      .sx-btnrow { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+      .sx-btn2 { width: 100%; box-sizing: border-box; border-radius: 12px; padding: 13px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; border: 1px solid #e1e1e8; background: #fff; color: #14121c; text-decoration: none; text-align: center; display: block; transition: 0.15s; }
+      .sx-btn2.p { background: #7a33ff; color: #fff; border-color: #7a33ff; }
+      .sx-btn2.p:hover { background: #6a28e6; }
+      .sx-btn2:hover { background: #f7f7fb; }
+      .sx-fade { animation: sxfade 0.35s ease; }
+      @keyframes sxfade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+      @media (max-width: 520px) { .sx-visuals { grid-template-columns: repeat(2, 1fr); } }
     </style>
     <div class="vm-overlay" id="vmOverlay">
-      <div class="fz" id="fzPanel"></div>
+      <div class="sx" id="sxCard"></div>
     </div>
     <script>
       (function () {
         var overlay = document.getElementById("vmOverlay");
-        var panel = document.getElementById("fzPanel");
-        if (!overlay || !panel) return;
-        var main, stage = "", timers = [];
+        var cardEl = document.getElementById("sxCard");
+        if (!overlay || !cardEl) return;
+        var body, stage = "", timers = [];
         function byId(x) { return document.getElementById(x); }
         function ct() { timers.forEach(clearTimeout); timers.forEach(clearInterval); timers = []; }
         function esc(s) { return (s || "").replace(/[<>&"]/g, function (c) { return { "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]; }); }
-        function setProg(p) { var t = byId("fzTprog"); if (t) t.style.width = p + "%"; }
-        var ORBIT = '<div class="fz-orbit"><div class="r"></div><div class="a"></div><div class="a2"></div><div class="c"></div></div>';
+        function setProg(p) { var b = byId("sxBar"); if (b) b.style.width = p + "%"; }
+        function setWide(w) { cardEl.className = w ? "sx wide" : "sx"; }
         var USAGE = ["Amazon / marketplaces", "Shopify / DTC PDP", "Meta & TikTok ads", "Website hero", "Email & retention"];
         var SKUS = ["Just 1 hero SKU", "2–10 products", "11–50 products", "50+ products"];
         var TIMING = ["Ready to start now", "Within this month", "Next quarter", "Just exploring"];
@@ -797,172 +757,128 @@
           var mono = (brand[0] || "B").toUpperCase();
           var h = 0, i; for (i = 0; i < host.length; i++) h = (h * 31 + host.charCodeAt(i)) >>> 0;
           var base = h % 360;
-          var sw = ["hsl(" + base + ",68%,56%)", "hsl(" + ((base + 26) % 360) + ",60%,46%)", "hsl(" + ((base + 330) % 360) + ",62%,62%)", "hsl(" + ((base + 200) % 360) + ",30%,24%)"];
+          var sw = ["hsl(" + base + ",68%,56%)", "hsl(" + ((base + 26) % 360) + ",60%,46%)", "hsl(" + ((base + 330) % 360) + ",62%,62%)", "hsl(" + ((base + 200) % 360) + ",30%,30%)"];
           var grad = "linear-gradient(140deg," + sw[0] + "," + sw[1] + ")";
           var TONE = ["Clean", "Premium", "Bold", "Playful", "Trustworthy", "Modern", "Warm", "Minimal"];
           var tones = [TONE[h % 8], TONE[(h >> 3) % 8], TONE[(h >> 6) % 8]];
           return { host: host, brand: brand, mono: mono, sw: sw, grad: grad, tones: tones };
         }
-        /* ---- open + persistent top bar ---- */
         function openM(u) {
           var b = parseBrand(u);
-          state = { url: u, host: b.host, brand: b.brand, mono: b.mono, sw: b.sw, grad: b.grad, tones: b.tones, usage: [], skus: null, timing: null, name: "", analyzed: false, email: null };
+          state = { url: u, host: b.host, brand: b.brand, mono: b.mono, sw: b.sw, grad: b.grad, tones: b.tones, usage: [], skus: null, timing: null, email: "" };
           overlay.classList.add("open");
-          panel.innerHTML =
-            '<div class="fz-top">' +
-              '<div class="fz-logo skel" id="fzLogo"></div>' +
-              '<div class="fz-bmeta"><div class="fz-bname"><span class="skel-line w120"></span></div><div class="fz-babout"><span class="skel-line w200"></span></div></div>' +
-              '<span class="fz-url">' + esc(state.url) + '</span>' +
-              '<span class="fz-status" id="fzStatus"><span class="fz-dot"></span> Analyzing brand…</span>' +
-              '<button class="fz-close" id="fzClose" aria-label="Close">&times;</button>' +
-            '</div>' +
-            '<div class="fz-tprog"><i id="fzTprog"></i></div>' +
-            '<div class="fz-main" id="fzMain"></div>';
-          main = byId("fzMain");
-          byId("fzClose").addEventListener("click", closeM);
-          setProg(8);
-          startTopAnalyze();
-          renderQuestion(0);
+          cardEl.innerHTML = '<div class="sx-prog"><i id="sxBar"></i></div>' +
+            '<div class="sx-top"><span class="sx-ctx" id="sxCtx">🔗 ' + esc(state.url) + '</span><button class="sx-close" id="sxClose" aria-label="Close">&times;</button></div>' +
+            '<div class="sx-body" id="sxBody"></div>';
+          body = byId("sxBody");
+          byId("sxClose").addEventListener("click", closeM);
+          renderEmail();
         }
-        function startTopAnalyze() {
-          var msgs = ["Reading your logo…", "Extracting brand colours…", "Learning your tone…"];
-          var i = 0;
-          var iv = setInterval(function () { var s = byId("fzStatus"); if (s && !state.analyzed) s.innerHTML = '<span class="fz-dot"></span> ' + msgs[i % msgs.length]; i++; }, 850);
-          timers.push(iv);
-          timers.push(setTimeout(function () {
-            clearInterval(iv);
-            state.analyzed = true;
-            var logo = byId("fzLogo"); if (logo) { logo.classList.remove("skel"); logo.style.background = state.grad; logo.textContent = state.mono; }
-            var nm = panel.querySelector(".fz-bname"); if (nm) nm.innerHTML = esc(state.brand);
-            var ab = panel.querySelector(".fz-babout"); if (ab) ab.innerHTML = "Direct-to-consumer · " + esc(state.tones[0]) + " / " + esc(state.tones[1]) + " tone";
-            var st = byId("fzStatus"); if (st) { st.classList.add("done"); st.innerHTML = '<span class="fz-dot"></span> Brand analyzed'; }
-          }, 2600));
+        /* 1 — email first */
+        function renderEmail() {
+          stage = "email"; setWide(false); setProg(16);
+          body.innerHTML = '<div class="sx-fade"><div class="sx-eyebrow">Free product video</div>' +
+            '<h3 class="sx-h">Where should we send it?</h3>' +
+            '<p class="sx-sub">Enter your email and we’ll deliver your finished, on-brand video for <b style="color:#14121c">' + esc(state.brand) + '</b> within 24 hours.</p>' +
+            '<form id="sxEmail"><input class="sx-input" type="email" required placeholder="you@company.com" aria-label="Email" /><button class="sx-btn" type="submit" id="sxEmailBtn" disabled>Continue</button></form>' +
+            '<p class="sx-fine">No spam — we only use it to send your video.</p></div>';
+          var f = byId("sxEmail"), inp = f.querySelector("input"), btn = byId("sxEmailBtn");
+          inp.addEventListener("input", function () { btn.disabled = !/.+@.+\..+/.test(inp.value.trim()); });
+          f.addEventListener("submit", function (e) { e.preventDefault(); if (btn.disabled) return; state.email = inp.value.trim(); renderQuestion(0); });
+          inp.focus();
         }
-        /* ---- questions, one by one ---- */
-        function canAdvance(q) { return q.multi ? state[q.key].length > 0 : !!state[q.key]; }
+        /* 2 — questions */
         function renderQuestion(idx) {
-          stage = "q" + idx;
-          setProg([26, 45, 62][idx]);
+          stage = "q" + idx; setWide(false); setProg([34, 50, 66][idx]);
           var q = QUESTIONS[idx];
-          var dots = QUESTIONS.map(function (_q, n) { return '<i class="' + (n < idx ? "done" : (n === idx ? "on" : "")) + '"></i>'; }).join("");
-          var chips = q.opts.map(function (o) {
+          var rows = q.opts.map(function (o) {
             var on = q.multi ? state[q.key].indexOf(o) >= 0 : state[q.key] === o;
-            return '<button type="button" class="fz-chip' + (on ? " sel" : "") + '" data-val="' + esc(o) + '">' + esc(o) + "</button>";
+            return '<button type="button" class="sx-opt' + (on ? " sel" : "") + '" data-val="' + esc(o) + '"><span class="lbl">' + esc(o) + '</span><span class="tk">' + (on ? "✓" : "") + "</span></button>";
           }).join("");
-          var nextLabel = idx + 1 < QUESTIONS.length ? "Continue →" : "Build my brand kit →";
-          main.innerHTML =
-            '<div class="fz-center fade">' +
-              '<div class="fz-prog"><div class="fz-dots">' + dots + '</div><span class="fz-stepn">' + (idx + 1) + " of " + QUESTIONS.length + "</span></div>" +
-              '<h2 class="fz-q-title">' + q.title + "</h2>" +
-              '<p class="fz-q-hint">' + q.hint + "</p>" +
-              '<div class="fz-chips" id="fzChips">' + chips + "</div>" +
-              '<div class="fz-actions">' + (idx > 0 ? '<button type="button" class="fz-back" id="fzBack">← Back</button>' : "") +
-                '<button type="button" class="fz-cta" id="fzNext"' + (canAdvance(q) ? "" : " disabled") + ">" + nextLabel + "</button></div>" +
+          body.innerHTML = '<div class="sx-fade"><div class="sx-stepn"><button class="sx-back" id="sxBack" aria-label="Back">←</button>Step ' + (idx + 2) + ' of 5<div class="bar"><i style="width:' + [45, 65, 85][idx] + '%"></i></div></div>' +
+            '<h3 class="sx-h">' + q.title + "</h3>" +
+            '<p class="sx-sub">' + q.hint + "</p>" +
+            '<div class="sx-opts" id="sxOpts">' + rows + "</div>" +
+            (q.multi ? '<button class="sx-btn" id="sxNext"' + (state[q.key].length ? "" : " disabled") + ">Continue</button>" : "") +
             "</div>";
-          byId("fzChips").addEventListener("click", function (e) {
-            var chip = e.target.closest(".fz-chip"); if (!chip) return;
-            var val = chip.getAttribute("data-val");
+          byId("sxOpts").addEventListener("click", function (e) {
+            var o = e.target.closest(".sx-opt"); if (!o) return;
+            var val = o.getAttribute("data-val");
             if (q.multi) {
               var a = state[q.key], k = a.indexOf(val);
-              if (k >= 0) { a.splice(k, 1); chip.classList.remove("sel"); } else { a.push(val); chip.classList.add("sel"); }
-              byId("fzNext").disabled = !state[q.key].length;
+              if (k >= 0) { a.splice(k, 1); o.classList.remove("sel"); o.querySelector(".tk").textContent = ""; }
+              else { a.push(val); o.classList.add("sel"); o.querySelector(".tk").textContent = "✓"; }
+              byId("sxNext").disabled = !a.length;
             } else {
               state[q.key] = val;
-              var all = this.querySelectorAll(".fz-chip"), j;
-              for (j = 0; j < all.length; j++) all[j].classList.remove("sel");
-              chip.classList.add("sel");
-              var s = stage;
-              setTimeout(function () { if (stage === s) goNext(idx); }, 300);
+              var all = this.querySelectorAll(".sx-opt"), j;
+              for (j = 0; j < all.length; j++) { all[j].classList.remove("sel"); all[j].querySelector(".tk").textContent = ""; }
+              o.classList.add("sel"); o.querySelector(".tk").textContent = "✓";
+              var s = stage; setTimeout(function () { if (stage === s) goNext(idx); }, 280);
             }
           });
-          var back = byId("fzBack"); if (back) back.addEventListener("click", function () { renderQuestion(idx - 1); });
-          byId("fzNext").addEventListener("click", function () { if (!this.disabled) goNext(idx); });
+          byId("sxBack").addEventListener("click", function () { if (idx === 0) renderEmail(); else renderQuestion(idx - 1); });
+          var nx = byId("sxNext"); if (nx) nx.addEventListener("click", function () { if (!this.disabled) goNext(idx); });
         }
-        function goNext(idx) { if (idx + 1 < QUESTIONS.length) renderQuestion(idx + 1); else renderGather(); }
-        /* ---- gathering ---- */
-        function renderGather() {
-          stage = "gather";
-          setProg(82);
-          main.innerHTML = '<div class="fz-center fade">' + ORBIT + '<h3 class="fz-load-title">Gathering your brand assets…</h3><div class="fz-load-sub" id="fzGsub">Pulling product imagery from ' + esc(state.host) + "…</div></div>";
-          var subs = ["Pulling product imagery…", "Matching on-brand visuals…", "Drafting your video script…"];
-          var i = 0;
-          var iv = setInterval(function () { var g = byId("fzGsub"); if (g) g.textContent = subs[i % subs.length]; i++; }, 700);
+        function goNext(idx) { if (idx + 1 < QUESTIONS.length) renderQuestion(idx + 1); else renderAnalyze(); }
+        /* 3 — analyzing */
+        function renderAnalyze() {
+          stage = "analyze"; setWide(false); setProg(86);
+          body.innerHTML = '<div class="sx-fade sx-center"><div class="sx-spin"></div>' +
+            '<h3 class="sx-h" style="margin-bottom:4px">Analyzing your brand</h3>' +
+            '<p class="sx-sub" id="sxAst" style="margin-bottom:0">Reading ' + esc(state.host) + "…</p>" +
+            '<ul class="sx-checks" id="sxChecks"><li>Fetching your product page</li><li>Reading logo &amp; brand colours</li><li>Matching on-brand visuals</li></ul></div>';
+          var items = byId("sxChecks").children, msgs = ["Reading " + state.host + "…", "Extracting brand colours…", "Drafting your script…"];
+          var i = 0, ast = byId("sxAst");
+          var iv = setInterval(function () { if (i < items.length) items[i].classList.add("done"); if (ast && msgs[i + 1]) ast.textContent = msgs[i + 1]; i++; }, 800);
           timers.push(iv);
-          timers.push(setTimeout(function () { clearInterval(iv); renderKit(); }, 2000));
+          timers.push(setTimeout(function () { clearInterval(iv); var k; for (k = 0; k < items.length; k++) items[k].classList.add("done"); renderKit(); }, 2700));
         }
-        /* ---- kit (skeleton then fill) ---- */
+        /* 4 — results */
         function renderKit() {
-          stage = "kit";
-          setProg(94);
-          var hot = isHot();
+          stage = "kit"; setWide(true); setProg(96);
           var parts = [].concat(state.usage); if (state.skus) parts.push(state.skus); if (state.timing) parts.push(state.timing);
           var sum = parts.map(function (s) { return '<span class="s">' + esc(s) + "</span>"; }).join("") || '<span class="s">Free product video</span>';
-          main.innerHTML =
-            '<div class="fz-wide fade">' +
-              '<div class="fz-kit-head"><span class="fz-tick">✓</span> Your brand kit is ready</div>' +
-              '<div class="fz-grid">' +
-                '<div class="fz-card"><div class="fz-label">About the brand</div>' +
-                  '<div id="fzAboutBox" class="fz-skrows"><span class="skel-line"></span><span class="skel-line"></span><span class="skel-line"></span></div>' +
-                  '<div class="fz-label" style="margin:18px 0 11px">Brand palette</div><div class="fz-swatches" id="fzSwatch"><i class="skel"></i><i class="skel"></i><i class="skel"></i><i class="skel"></i></div>' +
-                  '<div class="fz-label" style="margin:16px 0 11px">Tone of voice</div><div class="fz-tones" id="fzTones"><span class="skel-line" style="width:60px;height:20px;border-radius:200px"></span><span class="skel-line" style="width:70px;height:20px;border-radius:200px"></span></div>' +
-                '</div>' +
-                '<div>' +
-                  '<div class="fz-label">On-brand static visuals</div>' +
-                  '<div class="fz-visuals" id="fzVis"><div class="fz-vis skel"></div><div class="fz-vis skel"></div><div class="fz-vis skel"></div><div class="fz-vis skel"></div></div>' +
-                  '<div class="fz-label" style="margin-top:20px">Suggested video script</div>' +
-                  '<div class="fz-acc" id="fzAcc"><div class="fz-acc-head" id="fzAccH"><span>📝 4-shot script</span><span class="ch">›</span></div><div class="fz-acc-body"><div class="fz-acc-in" id="fzScript"><span class="skel-line" style="display:block;width:92%;margin-bottom:10px"></span><span class="skel-line" style="display:block;width:80%;margin-bottom:10px"></span><span class="skel-line" style="display:block;width:64%"></span></div></div></div>' +
-                '</div>' +
-                '<div class="fz-submit"><div><h3>' + (hot ? 'Let’s build your ' + esc(state.brand) + ' video catalog' : 'Get your free ' + esc(state.brand) + ' video') + '</h3><p>' + (hot ? 'Tell us where to send your free sample — a video strategist will follow up to scope the full set.' : 'Drop your work email and we’ll deliver your finished, on-brand video within 24 hours.') + '</p></div>' +
-                  '<div class="fz-summary">' + sum + "</div>" +
-                  '<form class="fz-form fz-form2" id="fzForm"><input type="text" id="fzName" placeholder="First name" aria-label="First name" /><input type="email" id="fzEmail" required placeholder="Work email" aria-label="Work email" /><button type="submit">' + (hot ? 'Get sample + book a call →' : 'Get my free video →') + '</button></form>' +
-                  '<div class="fz-trust">🔒 Free &amp; no commitment · trusted by 200+ D2C brands · no credit card</div>' +
-                '</div>' +
-              "</div>" +
-            "</div>";
-          byId("fzAccH").addEventListener("click", function () { byId("fzAcc").classList.toggle("open"); });
-          var form = byId("fzForm");
-          form.addEventListener("submit", function (e) { e.preventDefault(); var em = byId("fzEmail"); var nm = byId("fzName"); state.email = em ? em.value.trim() : ""; state.name = nm ? nm.value.trim() : ""; renderSubmitting(); });
+          var sw = state.sw.map(function (c) { return '<i style="background:' + c + '"></i>'; }).join("");
+          var tn = state.tones.map(function (t) { return '<span class="sx-tone">' + esc(t) + "</span>"; }).join("");
+          var L = ["Hero frame", "Lifestyle", "Detail", "Pack shot"];
+          var vis = L.map(function (l, n) { var g = "linear-gradient(160deg," + state.sw[n % 4] + "," + state.sw[(n + 1) % 4] + ")"; return '<div class="sx-vis" style="background:' + g + '"><span>' + l + "</span></div>"; }).join("");
+          var script =
+            '<div class="sx-shot"><b>Shot 1 · 0:00–0:03 — Hook.</b> ' + esc(state.brand) + ' product on a clean, on-brand surface. Bold benefit overlay.</div>' +
+            '<div class="sx-shot"><b>Shot 2 · 0:03–0:09 — Proof.</b> 360° detail &amp; texture, key callouts from your PDP.</div>' +
+            '<div class="sx-shot"><b>Shot 3 · 0:09–0:14 — Use.</b> Product in context / in-hand, with a social-proof line.</div>' +
+            '<div class="sx-shot"><b>Shot 4 · 0:14–0:18 — CTA.</b> Logo lockup + “Shop now” in your brand colours.</div>';
+          body.innerHTML = '<div class="sx-fade">' +
+            '<div class="sx-brandrow"><div class="sx-logo" style="background:' + state.grad + '">' + esc(state.mono) + '</div><div><div class="sx-bname">' + esc(state.brand) + '</div><div class="sx-bhost">' + esc(state.host) + '</div></div><span class="sx-badge">✓ Analyzed</span></div>' +
+            '<div class="sx-block"><div class="sx-label">Brand palette</div><div class="sx-swatches">' + sw + "</div></div>" +
+            '<div class="sx-block"><div class="sx-label">Tone of voice</div><div class="sx-tones">' + tn + "</div></div>" +
+            '<div class="sx-block"><div class="sx-label">On-brand static visuals</div><div class="sx-visuals">' + vis + "</div></div>" +
+            '<div class="sx-acc" id="sxAcc"><div class="sx-acc-h" id="sxAccH"><span>Suggested 4-shot script</span><span class="ch">›</span></div><div class="sx-acc-b"><div class="sx-acc-in">' + script + "</div></div></div>" +
+            '<div class="sx-label">Your request</div><div class="sx-summary">' + sum + "</div>" +
+            '<button class="sx-btn" id="sxSubmit">Submit for my video →</button></div>';
+          byId("sxAccH").addEventListener("click", function () { byId("sxAcc").classList.toggle("open"); });
+          byId("sxSubmit").addEventListener("click", renderSubmitting);
           setProg(100);
-          timers.push(setTimeout(fillKit, 1600));
         }
-        function fillKit() {
-          if (stage !== "kit") return;
-          var ab = byId("fzAboutBox"); if (ab) ab.innerHTML = '<div class="fz-about-txt">' + esc(state.brand) + " is a direct-to-consumer brand. We pulled your logo, colour palette, product imagery and " + esc(state.tones[0].toLowerCase()) + " tone of voice straight from " + esc(state.host) + " — so every frame stays on-brand.</div>";
-          var sw = byId("fzSwatch"); if (sw) sw.innerHTML = state.sw.map(function (c) { return '<i style="background:' + c + '"></i>'; }).join("");
-          var tn = byId("fzTones"); if (tn) tn.innerHTML = state.tones.map(function (t) { return '<span class="fz-tone">' + esc(t) + "</span>"; }).join("");
-          var vis = byId("fzVis"); if (vis) { var L = ["Hero frame", "Lifestyle", "Detail", "Pack shot"]; vis.innerHTML = L.map(function (l, n) { var g = "linear-gradient(160deg," + state.sw[n % 4] + "," + state.sw[(n + 1) % 4] + ")"; return '<div class="fz-vis" style="background:' + g + '"><span>' + l + "</span></div>"; }).join(""); }
-          var sc = byId("fzScript"); if (sc) sc.innerHTML =
-            '<div class="fz-shot"><b>Shot 1 · 0:00–0:03 — Hook.</b> ' + esc(state.brand) + ' product on a clean, on-brand surface. Bold benefit overlay.</div>' +
-            '<div class="fz-shot"><b>Shot 2 · 0:03–0:09 — Proof.</b> 360° detail &amp; texture, key callouts from your PDP.</div>' +
-            '<div class="fz-shot"><b>Shot 3 · 0:09–0:14 — Use.</b> Product in context / in-hand, with a social-proof line.</div>' +
-            '<div class="fz-shot"><b>Shot 4 · 0:14–0:18 — CTA.</b> Logo lockup + “Shop now” in your brand colours.</div>';
-        }
-        /* ---- submit + done ---- */
+        /* 5 — submit + done */
         function renderSubmitting() {
-          stage = "submitting";
-          main.innerHTML = '<div class="fz-center fade">' + ORBIT + '<h3 class="fz-load-title">Submitting your request…</h3><div class="fz-load-sub">Sending your brief to our team…</div></div>';
-          timers.push(setTimeout(renderDone, 1700));
+          stage = "submitting"; setWide(false);
+          body.innerHTML = '<div class="sx-fade sx-center"><div class="sx-spin"></div><h3 class="sx-h" style="margin-bottom:4px">Submitting your request…</h3><p class="sx-sub" style="margin-bottom:0">Sending your brief to our team.</p></div>';
+          timers.push(setTimeout(renderDone, 1500));
         }
         function renderDone() {
-          stage = "done";
+          stage = "done"; setWide(false);
           var hot = isHot();
-          var greet = state.name ? esc(state.name) + ", " : "";
-          var sentTo = state.email ? " at " + esc(state.email) : "";
-          var html;
-          if (hot) {
-            html = '<div class="fz-check">✓</div><h2 class="fz-q-title">You’re in 🎉</h2>' +
-              '<p class="fz-q-hint">' + greet + 'your free <b style="color:#fff">' + esc(state.brand) + '</b> sample is in production. A video strategist will reach out' + sentTo + ' within a few hours to scope your full catalog — grab a time now so you skip the wait:</p>' +
-              '<div class="fz-btnrow"><a class="fz-btn p" href="https://getgaana.com/book-demo">Book your strategy call →</a><button type="button" class="fz-btn g" id="fzDoneBtn">I’ll wait for the email</button></div>';
-          } else {
-            html = '<div class="fz-check">✓</div><h2 class="fz-q-title">Request submitted 🎉</h2>' +
-              '<p class="fz-q-hint">' + greet + 'we’ll have your free, on-brand <b style="color:#fff">' + esc(state.brand) + '</b> video ready within 24 hours' + sentTo + '. Want more SKUs or a faster turnaround? Talk to us:</p>' +
-              '<div class="fz-btnrow"><a class="fz-btn p" href="https://getgaana.com/book-demo">Book a strategy call</a><button type="button" class="fz-btn g" id="fzDoneBtn">Done</button></div>';
-          }
-          main.innerHTML = '<div class="fz-center fade">' + html + '</div>';
-          byId("fzDoneBtn").addEventListener("click", closeM);
+          body.innerHTML = '<div class="sx-fade sx-center"><div class="sx-check">✓</div>' +
+            '<h3 class="sx-h">' + (hot ? "You’re in 🎉" : "Request submitted 🎉") + "</h3>" +
+            '<p class="sx-sub">' + (hot
+              ? "Your free <b style=\"color:#14121c\">" + esc(state.brand) + "</b> sample is in production. A video strategist will email " + esc(state.email) + " shortly to scope your full catalog."
+              : "We’ll have your free, on-brand <b style=\"color:#14121c\">" + esc(state.brand) + "</b> video ready within 24 hours, sent to " + esc(state.email) + ".") + "</p>" +
+            '<div class="sx-btnrow"><a class="sx-btn2 p" href="https://getgaana.com/book-demo">' + (hot ? "Book your strategy call" : "Book a strategy call") + '</a><button class="sx-btn2" id="sxDone">Done</button></div></div>';
+          byId("sxDone").addEventListener("click", closeM);
         }
         function closeM() { overlay.classList.remove("open"); ct(); stage = ""; }
-        /* ---- triggers ---- */
+        /* triggers */
         overlay.addEventListener("click", function (e) { if (e.target === overlay) closeM(); });
         document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeM(); });
         document.querySelectorAll(".hero-form, .hero-url-form").forEach(function (f) {
