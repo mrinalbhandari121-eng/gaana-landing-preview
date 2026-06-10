@@ -329,8 +329,8 @@
           data.note = { cls: "", txt: "✓ <b>Marketplace-safe by default:</b> no pricing, badges or external links baked into images, no medical claims, white main image — built to pass Amazon review." };
           data.results = [
             { tag: "A+ MODULE", title: "A+ content image", why: "<b>Why:</b> your A+ is Basic — a Premium-style comparison module lifts conversion and AOV." },
-            { tag: "VIDEO", title: "Listing video", why: "<b>Why:</b> no video on the listing today — the single biggest, compliance-safe conversion lever." },
-            { tag: "AD", title: "Sponsored / Meta ad", why: "<b>Why:</b> matches your PDP story so paid traffic converts instead of bouncing." }
+            { tag: "AD", title: "Sponsored / Meta ad", why: "<b>Why:</b> matches your PDP story so paid traffic converts instead of bouncing." },
+            { tag: "VIDEO", title: "Listing video", why: "<b>Why:</b> no video on the listing today — the single biggest, compliance-safe conversion lever." }
           ];
           data.locked = ["TikTok hook", "Lifestyle image set", "Comparison card", "Bundle promo", "Review reel", "Mobile A+ variant"];
         } else if (p === "shopify") {
@@ -381,7 +381,6 @@
       document.getElementById("heroForm").addEventListener("submit", function (e) {
         e.preventDefault();
         var v = document.getElementById("heroUrl").value.trim();
-        if (!v) { document.getElementById("heroUrl").focus(); return; }
         state.url = v; show("flow"); renderEmail();
       });
       function startBlank() { state.url = ""; show("flow"); renderEmail(); }
@@ -396,7 +395,7 @@
           '<p class="fine">Free preview · no card needed · unsubscribe anytime</p></div>';
         var inp = document.getElementById("emInput"), btn = document.getElementById("emBtn");
         inp.addEventListener("input", function () { btn.disabled = !/.+@.+\..+/.test(inp.value.trim()); });
-        document.getElementById("emForm").addEventListener("submit", function (e) { e.preventDefault(); if (btn.disabled) return; state.email = inp.value.trim(); state.url ? (function () { state.data = analyzePDP(state.url); renderRun(); })() : renderUrl(); });
+        document.getElementById("emForm").addEventListener("submit", function (e) { e.preventDefault(); if (btn.disabled) return; state.email = inp.value.trim(); renderUrl(); });
         inp.focus();
       }
       function renderUrl() {
@@ -406,13 +405,13 @@
           '<div class="eyebrow">Step 2 of 2</div>' +
           '<h2>Paste your product page URL</h2>' +
           '<p class="sub">Amazon, Shopify, Flipkart or any product page. That’s the only thing we need.</p>' +
-          '<form id="urlForm"><input class="field" id="urlInput" type="text" required placeholder="https://…/your-product" />' +
+          '<form id="urlForm"><input class="field" id="urlInput" type="text" required placeholder="https://…/your-product" value="' + esc(state.url || "") + '" />' +
           '<div class="examples"><span class="ex" data-u="https://www.amazon.com/dp/B0BRANDSEED">Try an Amazon link</span><span class="ex" data-u="https://your-brand.com/products/the-hero-product">Try a Shopify link</span></div>' +
           '<button class="btn btn-primary btn-lg row-btn" id="urlBtn" type="submit" disabled>Make my video →</button></form>' +
           '<p class="fine">We never post or change anything — we only read the page.</p></div>';
         var inp = document.getElementById("urlInput"), btn = document.getElementById("urlBtn");
         function sync() { btn.disabled = inp.value.trim().length < 4; }
-        inp.addEventListener("input", sync);
+        inp.addEventListener("input", sync); sync();
         Array.prototype.forEach.call(stage.querySelectorAll(".ex"), function (e) { e.addEventListener("click", function () { inp.value = e.getAttribute("data-u"); sync(); inp.focus(); }); });
         document.getElementById("urlForm").addEventListener("submit", function (ev) { ev.preventDefault(); if (btn.disabled) return; state.url = inp.value.trim(); state.data = analyzePDP(state.url); renderRun(); });
         inp.focus();
