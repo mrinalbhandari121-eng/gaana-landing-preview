@@ -800,17 +800,17 @@
             '<div class="sx-body" id="sxBody"></div>';
           body = byId("sxBody");
           byId("sxClose").addEventListener("click", closeM);
-          renderQuestion(0);
+          renderEmail();
         }
         /* Steps 1–3 — questions first (build momentum) */
         function renderQuestion(idx) {
-          stage = "q" + idx; setWide(false); setProg([16, 32, 48][idx]);
+          stage = "q" + idx; setWide(false); setProg([32, 48, 64][idx]);
           var q = QUESTIONS[idx];
           var rows = q.opts.map(function (o) {
             var on = q.multi ? state[q.key].indexOf(o) >= 0 : state[q.key] === o;
             return '<button type="button" class="sx-opt' + (on ? " sel" : "") + '" data-val="' + esc(o) + '"><span class="lbl">' + esc(o) + '</span><span class="tk">' + (on ? "✓" : "") + "</span></button>";
           }).join("");
-          body.innerHTML = '<div class="sx-fade"><div class="sx-stepn">' + (idx > 0 ? '<button class="sx-back" id="sxBack" aria-label="Back">←</button>' : "") + 'Step ' + (idx + 1) + ' of 5<div class="bar"><i style="width:' + [20, 40, 60][idx] + '%"></i></div></div>' +
+          body.innerHTML = '<div class="sx-fade"><div class="sx-stepn"><button class="sx-back" id="sxBack" aria-label="Back">←</button>Step ' + (idx + 2) + ' of 5<div class="bar"><i style="width:' + [40, 60, 80][idx] + '%"></i></div></div>' +
             '<h2 class="sx-h">' + q.title + "</h2>" +
             '<p class="sx-sub">' + q.hint + "</p>" +
             '<div class="sx-opts" id="sxOpts">' + rows + "</div>" +
@@ -832,13 +832,13 @@
               var s = stage; setTimeout(function () { if (stage === s) goNext(idx); }, 280);
             }
           });
-          var bk = byId("sxBack"); if (bk) bk.addEventListener("click", function () { renderQuestion(idx - 1); });
+          var bk = byId("sxBack"); if (bk) bk.addEventListener("click", function () { if (idx === 0) renderEmail(); else renderQuestion(idx - 1); });
           var nx = byId("sxNext"); if (nx) nx.addEventListener("click", function () { if (!this.disabled) goNext(idx); });
         }
         function goNext(idx) { if (idx + 1 < QUESTIONS.length) renderQuestion(idx + 1); else renderAnalyze(); }
         /* Step 4 — analyzing (value reveal / labor illusion) */
         function renderAnalyze() {
-          stage = "analyze"; setWide(false); setProg(64);
+          stage = "analyze"; setWide(false); setProg(82);
           body.innerHTML = '<div class="sx-fade sx-center"><div class="sx-spin"></div>' +
             '<h3 class="sx-h" style="margin-bottom:4px">Analyzing your brand</h3>' +
             '<p class="sx-sub" style="margin-bottom:0">This takes about 20 seconds.</p>' +
@@ -846,22 +846,21 @@
           var items = byId("sxChecks").children, i = 0;
           var iv = setInterval(function () { if (i < items.length) items[i].classList.add("done"); i++; }, 650);
           timers.push(iv);
-          timers.push(setTimeout(function () { clearInterval(iv); var k; for (k = 0; k < items.length; k++) items[k].classList.add("done"); renderEmail(); }, 2900));
+          timers.push(setTimeout(function () { clearInterval(iv); var k; for (k = 0; k < items.length; k++) items[k].classList.add("done"); renderKit(); }, 2900));
         }
         /* Step 5 — email LAST (after value is shown) */
         function renderEmail() {
-          stage = "email"; setWide(false); setProg(82);
-          body.innerHTML = '<div class="sx-fade"><button class="sx-back" id="sxBack" aria-label="Back" style="margin-bottom:16px">←</button>' +
-            '<div class="sx-eyebrow">Your video is ready · delivered in 24h</div>' +
+          stage = "email"; setWide(false); setProg(16);
+          body.innerHTML = '<div class="sx-fade">' +
+            '<div class="sx-eyebrow">Free product video · 24h turnaround</div>' +
             '<h2 class="sx-h">Where should we send your free video?</h2>' +
-            '<p class="sx-sub">We’ve analyzed your brand and lined up a 4-shot, on-brand product video for <b style="color:#14121c">' + esc(state.brand) + '</b>. Drop your email and it lands in your inbox within 24 hours — free, no card needed.</p>' +
-            '<form id="sxEmail"><input class="sx-input" type="email" required placeholder="you@yourbrand.com" autocomplete="email" aria-label="Email" /><button class="sx-btn" type="submit" id="sxEmailBtn" disabled>Email me my video →</button></form>' +
+            '<p class="sx-sub">Tell us where to deliver your finished, on-brand product video for <b style="color:#14121c">' + esc(state.brand) + '</b>. Free, delivered within 24 hours — no card required.</p>' +
+            '<form id="sxEmail"><input class="sx-input" type="email" required placeholder="you@yourbrand.com" autocomplete="email" aria-label="Email" /><button class="sx-btn" type="submit" id="sxEmailBtn" disabled>Get my free video →</button></form>' +
             '<p class="sx-fine">No spam — just your video.</p>' +
             '<div class="sx-trustrow"><span>🔒 No card needed</span><span>⏱ 24-hour delivery</span><span>✦ One free revision</span></div></div>';
           var f = byId("sxEmail"), inp = f.querySelector("input"), btn = byId("sxEmailBtn");
           inp.addEventListener("input", function () { btn.disabled = !/.+@.+\..+/.test(inp.value.trim()); });
-          f.addEventListener("submit", function (e) { e.preventDefault(); if (btn.disabled) return; state.email = inp.value.trim(); renderKit(); });
-          byId("sxBack").addEventListener("click", function () { renderQuestion(2); });
+          f.addEventListener("submit", function (e) { e.preventDefault(); if (btn.disabled) return; state.email = inp.value.trim(); renderQuestion(0); });
           inp.focus();
         }
         /* Results — sell the outcome, then submit */
