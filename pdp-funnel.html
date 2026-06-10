@@ -253,9 +253,8 @@
         var brand = core.replace(/[-_]+/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); }).trim();
         var seed = host || "brand";
         var h = 0, i; for (i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
-        var base = h % 360;
-        var sw = ["hsl(" + base + ",62%,58%)", "hsl(" + ((base + 28) % 360) + ",55%,48%)", "hsl(" + ((base + 320) % 360) + ",50%,64%)", "hsl(" + ((base + 200) % 360) + ",24%,32%)"];
-        return { ok: ok, host: host, hash: h, brand: ok ? brand : "Your brand", grad: "linear-gradient(140deg," + sw[0] + "," + sw[1] + ")", sw: sw };
+        var sw = ["#7A33FF", "#2C234D", "#F24CF3", "#EDE3FF"];
+        return { ok: ok, host: host, hash: h, brand: ok ? brand : "Your brand", grad: "linear-gradient(140deg,#7A33FF,#2C234D)", sw: sw };
       }
       function detectPlatform(u) {
         var s = (u || "").toLowerCase();
@@ -481,12 +480,12 @@
       }
       /* ---- gallery ---- */
       var SAMPLES = [
-        { plat: "Amazon", t: "Earthwise PetLawn", p: "Listing video · Lawn & Garden", g: "linear-gradient(150deg,#dff3e3,#bfe6c9)" },
-        { plat: "Shopify", t: "Lumera Skincare", p: "PDP hero loop · Beauty", g: "linear-gradient(150deg,#ffe3f3,#ffc8e6)" },
-        { plat: "TikTok", t: "BoltPods", p: "UGC hook ad · Electronics", g: "linear-gradient(150deg,#e3e8ff,#c8d4ff)" },
-        { plat: "Instagram", t: "Casa Linens", p: "Story ad · Home", g: "linear-gradient(150deg,#fff0e3,#ffd9bf)" },
-        { plat: "Meta", t: "TrailFuel Bars", p: "Ad set · Food & Bev", g: "linear-gradient(150deg,#ede3ff,#d9c8ff)" },
-        { plat: "Amazon", t: "AquaPure Bottle", p: "A+ module + video · Sports", g: "linear-gradient(150deg,#e3f7ff,#c8ecff)" }
+        { plat: "Amazon", t: "Earthwise PetLawn", p: "Listing video · Lawn & Garden", g: "linear-gradient(150deg,#ede3ff,#d9c8ff)" },
+        { plat: "Shopify", t: "Lumera Skincare", p: "PDP hero loop · Beauty", g: "linear-gradient(150deg,#efe7ff,#c9b4ff)" },
+        { plat: "TikTok", t: "BoltPods", p: "UGC hook ad · Electronics", g: "linear-gradient(150deg,#e7e3ff,#cdc4ff)" },
+        { plat: "Instagram", t: "Casa Linens", p: "Story ad · Home", g: "linear-gradient(150deg,#f3e3ff,#e0c8ff)" },
+        { plat: "Meta", t: "TrailFuel Bars", p: "Ad set · Food & Bev", g: "linear-gradient(150deg,#ede3ff,#d2c0ff)" },
+        { plat: "Amazon", t: "AquaPure Bottle", p: "A+ module + video · Sports", g: "linear-gradient(150deg,#e9e3ff,#d9c8ff)" }
       ];
       function renderGallery() {
         document.getElementById("gGrid").innerHTML = SAMPLES.map(function (s) {
