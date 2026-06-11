@@ -138,6 +138,10 @@
       .stp.done .stp-lbl { color: rgba(255,255,255,0.65); }
       .stp-line { flex: 1; height: 1.5px; background: rgba(255,255,255,0.12); margin: 0 12px; min-width: 16px; }
       .stp-line.on { background: rgba(122,51,255,0.45); }
+      .stp.reached { cursor: pointer; }
+      .stp.reached:hover .stp-lbl { color: #fff; }
+      .stp.viewing .stp-dot { box-shadow: 0 0 0 3px rgba(122,51,255,0.25); }
+      .steps-hint { font-size: 11.5px; color: rgba(255,255,255,0.35); margin: -8px 0 16px; padding: 0 4px; }
       .phase { background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
       .ph-title { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 800; margin-bottom: 16px; }
       .ph-title .pic { display: inline-flex; }
@@ -500,21 +504,31 @@
       }
       function scrollSec(el) { if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }
       var STEPS = ["Analyze", "Channels", "Insights", "Create"];
+      var PHIDS = ["phAnalyze", "phChans", "phFound", "phGen"];
       function drawSteps() {
         var el = document.getElementById("steps"); if (!el) return;
         el.innerHTML = STEPS.map(function (s, n) {
-          var cls = n < state.step ? "done" : (n === state.step ? "active" : "");
-          var dot = n < state.step ? "✓" : (n + 1);
-          return (n ? '<div class="stp-line' + (n <= state.step ? " on" : "") + '"></div>' : "") + '<div class="stp ' + cls + '"><span class="stp-dot">' + dot + '</span><span class="stp-lbl">' + s + "</span></div>";
+          var done = n < state.step || (n === state.step && state.done);
+          var active = n === state.step && !state.done;
+          var reached = n <= state.step;
+          var cls = (done ? "done " : "") + (active ? "active " : "") + (n === state.view ? "viewing " : "") + (reached ? "reached" : "");
+          var dot = done ? "✓" : (n + 1);
+          return (n ? '<div class="stp-line' + (n <= state.step ? " on" : "") + '"></div>' : "") + '<div class="stp ' + cls + '" data-n="' + n + '"><span class="stp-dot">' + dot + '</span><span class="stp-lbl">' + s + "</span></div>";
         }).join("");
+        Array.prototype.forEach.call(el.querySelectorAll(".stp.reached"), function (st) { st.addEventListener("click", function () { viewStep(+st.getAttribute("data-n")); }); });
+        var h = document.getElementById("stepsHint"); if (h) h.style.display = state.step > 0 ? "" : "none";
       }
-      function setStep(n) { state.step = n; drawSteps(); }
+      function showView(n) { PHIDS.forEach(function (id, idx) { var e = document.getElementById(id); if (e) e.style.display = idx === n ? "" : "none"; }); }
+      function viewStep(n) { if (n > state.step) return; state.view = n; drawSteps(); showView(n); }
+      function goLive(n) { var follow = state.view === state.step; state.step = n; state.done = false; if (follow) state.view = n; drawSteps(); showView(state.view); }
+      function finishLive() { state.done = true; drawSteps(); }
       function phaseHTML(title, body) { return '<div class="ph-fade"><div class="ph-title">' + title + '</div>' + body + "</div>"; }
       function renderRun() {
         ctimers();
-        state.step = 0;
+        state.step = 0; state.view = 0; state.done = false;
         stage.className = "stage wide";
-        stage.innerHTML = '<div class="steps" id="steps"></div><div class="phase" id="phaseCard"></div>';
+        stage.innerHTML = '<div class="steps" id="steps"></div><div class="steps-hint" id="stepsHint" style="display:none">Tap any completed step to revisit it</div>' +
+          '<div class="phase" id="phAnalyze"></div><div class="phase" id="phChans" style="display:none"></div><div class="phase" id="phFound" style="display:none"></div><div class="phase" id="phGen" style="display:none"></div>';
         drawSteps();
         window.scrollTo({ top: 0 });
         runAnalyze();
@@ -527,42 +541,42 @@
         return ["Fetching the page", "Reading product details", "Reading description & schema", "Reading meta tags & images"];
       }
       function runAnalyze() {
-        var d = state.data, el = document.getElementById("phaseCard");
+        var d = state.data, el = document.getElementById("phAnalyze");
         var rows = analyzeSteps(d.platform).map(function (s) { return '<div class="tl-row"><span class="tl-node">' + FILE_IC + '</span><span class="tl-lbl">' + s + "</span></div>"; }).join("");
         rows += '<div class="tl-row tl-done"><span class="tl-node">' + CIRCLE_IC + '</span><span class="tl-lbl">Done</span></div>';
         el.innerHTML = phaseHTML("Analyzing your " + picon(d.platform) + esc(d.plabel) + " page", '<div class="tl-list">' + rows + "</div>");
         var all = el.querySelectorAll(".tl-row"), i = 0;
         (function step() {
-          if (i >= all.length) { timers.push(setTimeout(function () { setStep(1); runChannels(); }, 400)); return; }
+          if (i >= all.length) { timers.push(setTimeout(function () { runChannels(); goLive(1); }, 400)); return; }
           var r = all[i], last = i === all.length - 1;
           r.classList.add("loading");
           timers.push(setTimeout(function () { r.classList.remove("loading"); r.classList.add(last ? "fin" : "on"); i++; step(); }, last ? 500 : TIMING.step));
         })();
       }
       function runChannels() {
-        var el = document.getElementById("phaseCard");
+        var el = document.getElementById("phChans");
         el.innerHTML = phaseHTML("Matching ad channels", '<div class="chans">' + CHANNELS.map(function (c) { return '<div class="chan"><span class="cic">' + c.ic + '</span><span class="cn">' + esc(c.n) + '</span><span class="ck"></span></div>'; }).join("") + "</div>");
         var rows = el.querySelectorAll(".chan"), i = 0;
         (function step() {
-          if (i >= rows.length) { timers.push(setTimeout(function () { setStep(2); runFound(); }, 350)); return; }
+          if (i >= rows.length) { timers.push(setTimeout(function () { runFound(); goLive(2); }, 350)); return; }
           var c = rows[i]; c.classList.add("loading");
           timers.push(setTimeout(function () { c.classList.remove("loading"); c.classList.add("on"); c.querySelector(".ck").textContent = "✓"; i++; step(); }, TIMING.chan));
         })();
       }
       function runFound() {
-        var d = state.data, el = document.getElementById("phaseCard");
+        var d = state.data, el = document.getElementById("phFound");
         var body = '<p class="found-sub">We pulled the signals that matter for high-converting creative — straight from your live page.</p><div class="found">' +
           d.found.map(function (f) { return '<div class="fcard"><span class="licon">' + licon(f.lab) + '</span><div class="fc-body"><div class="lab">' + f.lab + '</div><div class="big">' + f.big + '</div><div class="mut">' + f.mut + "</div></div></div>"; }).join("") +
           (d.note ? '<div class="note ' + d.note.cls + '">' + d.note.txt + "</div>" : "") + "</div>";
         el.innerHTML = phaseHTML("What we found", body);
         var cards = el.querySelectorAll(".fcard, .note"), i = 0;
         (function fade() {
-          if (i >= cards.length) { timers.push(setTimeout(function () { setStep(3); runGen(); }, 500)); return; }
+          if (i >= cards.length) { timers.push(setTimeout(function () { runGen(); goLive(3); }, 500)); return; }
           cards[i].classList.add("in"); i++; timers.push(setTimeout(fade, TIMING.found));
         })();
       }
       function runGen() {
-        var d = state.data, el = document.getElementById("phaseCard");
+        var d = state.data, el = document.getElementById("phGen");
         var imgN = 0;
         var times = d.results.map(function (r) { if (kindOf(r.tag) === "video") return 40000; imgN++; return 11000 + imgN * 5000; });
         var body =
@@ -584,7 +598,7 @@
           }, times[idx]));
         });
         timers.push(setTimeout(function () {
-          setStep(4);
+          finishLive();
           var gn = el.querySelector(".gen-note"); if (gn) gn.style.display = "none";
           var lr = document.getElementById("lockedRow"); lr.style.display = "flex";
           lr.innerHTML = d.locked.map(function (l) { return '<span class="lock">🔒 ' + esc(l) + "</span>"; }).join("");
