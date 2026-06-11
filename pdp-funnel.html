@@ -128,23 +128,23 @@
       .tl-row.on .tl-node { color: #b794ff; border-color: rgba(122,51,255,0.4); background: rgba(122,51,255,0.12); }
       .tl-row.fin .tl-lbl { color: #fff; font-weight: 700; }
       .tl-row.fin .tl-node { color: var(--good); border-color: var(--good); background: rgba(40,214,132,0.14); }
-      .acc { background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-radius: 18px; margin-bottom: 14px; overflow: hidden; transition: border-color 0.25s; }
-      .acc.active { border-color: rgba(122,51,255,0.3); }
-      .acc-h { display: flex; align-items: center; gap: 11px; padding: 16px 20px; }
-      .acc.done .acc-h { cursor: pointer; }
-      .acc-ic { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: #0d0a17; box-sizing: border-box; }
-      .acc.active .acc-ic { border-color: rgba(122,51,255,0.3); border-top-color: #b794ff; animation: sp 0.7s linear infinite; }
-      .acc.done .acc-ic { background: var(--good); border-color: var(--good); }
-      .acc.done .acc-ic:after { content: "✓"; }
-      .acc-t { font-size: 14.5px; font-weight: 700; color: #fff; }
-      .acc:not(.active):not(.done) .acc-t { color: rgba(255,255,255,0.4); }
-      .acc-sum { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--sub); }
-      .acc-chev { font-size: 12px; color: var(--sub); transition: transform 0.25s; }
-      .acc:not(.done) .acc-chev { opacity: 0; }
-      .acc.open .acc-chev { transform: rotate(180deg); }
-      .acc-b { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.35s ease; }
-      .acc.open .acc-b { grid-template-rows: 1fr; }
-      .acc-in { overflow: hidden; min-height: 0; padding: 2px 20px 18px; }
+      .steps { display: flex; align-items: center; margin-bottom: 18px; padding: 0 4px; }
+      .stp { display: flex; align-items: center; gap: 9px; }
+      .stp-dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.4); flex-shrink: 0; box-sizing: border-box; }
+      .stp.active .stp-dot { border-color: rgba(122,51,255,0.35); border-top-color: #b794ff; animation: sp 0.7s linear infinite; color: #fff; }
+      .stp.done .stp-dot { background: var(--good); border-color: var(--good); color: #0d0a17; }
+      .stp-lbl { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.4); white-space: nowrap; }
+      .stp.active .stp-lbl { color: #fff; }
+      .stp.done .stp-lbl { color: rgba(255,255,255,0.65); }
+      .stp-line { flex: 1; height: 1.5px; background: rgba(255,255,255,0.12); margin: 0 12px; min-width: 16px; }
+      .stp-line.on { background: rgba(122,51,255,0.45); }
+      .phase { background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
+      .ph-title { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 800; margin-bottom: 16px; }
+      .ph-title .pic { display: inline-flex; }
+      .ph-title .pic svg { width: 16px; height: 16px; vertical-align: -2px; }
+      @keyframes phf { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+      .ph-fade { animation: phf 0.35s ease; }
+      @media (max-width: 560px) { .stp-lbl { display: none; } .stp-line { margin: 0 7px; } }
       .found { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
       .fcard { border: 1px solid var(--line); border-radius: 14px; padding: 16px; opacity: 0; transform: translateY(8px); transition: opacity 0.45s, transform 0.45s; background: rgba(255,255,255,0.02); }
       .fcard.in { opacity: 1; transform: none; }
@@ -499,27 +499,24 @@
         em.focus();
       }
       function scrollSec(el) { if (el) el.scrollIntoView({ behavior: "smooth", block: "center" }); }
-      function acc(id, title) { return '<div class="acc" id="' + id + '"><div class="acc-h"><span class="acc-ic"></span><span class="acc-t">' + title + '</span><span class="acc-sum"></span><span class="acc-chev">⌄</span></div><div class="acc-b"><div class="acc-in" id="' + id + 'B"></div></div></div>'; }
-      function startAcc(id) { var a = document.getElementById(id); if (a) { a.classList.add("open", "active"); a.classList.remove("done"); } }
-      function doneAcc(id, sum) { var a = document.getElementById(id); if (a) { a.classList.remove("open", "active"); a.classList.add("done"); var s = a.querySelector(".acc-sum"); if (s) s.textContent = sum || ""; } }
-      function readyAcc(id, sum) { var a = document.getElementById(id); if (a) { a.classList.remove("active"); a.classList.add("done"); var s = a.querySelector(".acc-sum"); if (s) s.textContent = sum || ""; } }
+      var STEPS = ["Analyze", "Channels", "Insights", "Create"];
+      function drawSteps() {
+        var el = document.getElementById("steps"); if (!el) return;
+        el.innerHTML = STEPS.map(function (s, n) {
+          var cls = n < state.step ? "done" : (n === state.step ? "active" : "");
+          var dot = n < state.step ? "✓" : (n + 1);
+          return (n ? '<div class="stp-line' + (n <= state.step ? " on" : "") + '"></div>' : "") + '<div class="stp ' + cls + '"><span class="stp-dot">' + dot + '</span><span class="stp-lbl">' + s + "</span></div>";
+        }).join("");
+      }
+      function setStep(n) { state.step = n; drawSteps(); }
+      function phaseHTML(title, body) { return '<div class="ph-fade"><div class="ph-title">' + title + '</div>' + body + "</div>"; }
       function renderRun() {
         ctimers();
-        var d = state.data;
+        state.step = 0;
         stage.className = "stage wide";
-        stage.innerHTML =
-          '<div class="run-head"><div class="run-logo" style="background:' + d.grad + '">' + (d.generic ? GLOBE : esc(d.brand.charAt(0))) + '</div>' +
-            '<div class="run-meta"><div class="run-name">' + esc(d.brand) + '</div></div>' +
-            '<span class="run-badge">' + picon(d.platform) + (d.platform === "generic" ? "Product page" : esc(d.plabel)) + '</span></div>' +
-          acc("accAnalyze", "Analyzing your " + esc(d.plabel) + " page") +
-          acc("accChans", "Matching ad channels") +
-          acc("accFound", "What we found") +
-          acc("accGen", "Generating your creatives");
-        Array.prototype.forEach.call(stage.querySelectorAll(".acc"), function (a) {
-          a.querySelector(".acc-h").addEventListener("click", function () { if (a.classList.contains("done")) a.classList.toggle("open"); });
-        });
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        startAcc("accAnalyze");
+        stage.innerHTML = '<div class="steps" id="steps"></div><div class="phase" id="phaseCard"></div>';
+        drawSteps();
+        window.scrollTo({ top: 0 });
         runAnalyze();
       }
       var FILE_IC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/></svg>';
@@ -530,48 +527,50 @@
         return ["Fetching the page", "Reading product details", "Reading description & schema", "Reading meta tags & images"];
       }
       function runAnalyze() {
-        var d = state.data, el = document.getElementById("accAnalyzeB");
+        var d = state.data, el = document.getElementById("phaseCard");
         var rows = analyzeSteps(d.platform).map(function (s) { return '<div class="tl-row"><span class="tl-node">' + FILE_IC + '</span><span class="tl-lbl">' + s + "</span></div>"; }).join("");
         rows += '<div class="tl-row tl-done"><span class="tl-node">' + CIRCLE_IC + '</span><span class="tl-lbl">Done</span></div>';
-        el.innerHTML = '<div class="tl-list">' + rows + "</div>";
+        el.innerHTML = phaseHTML("Analyzing your " + picon(d.platform) + esc(d.plabel) + " page", '<div class="tl-list">' + rows + "</div>");
         var all = el.querySelectorAll(".tl-row"), i = 0;
         (function step() {
-          if (i >= all.length) { timers.push(setTimeout(function () { doneAcc("accAnalyze", "Done"); startAcc("accChans"); runChannels(); }, 350)); return; }
+          if (i >= all.length) { timers.push(setTimeout(function () { setStep(1); runChannels(); }, 400)); return; }
           var r = all[i], last = i === all.length - 1;
           r.classList.add("loading");
-          timers.push(setTimeout(function () { r.classList.remove("loading"); r.classList.add(last ? "fin" : "on"); i++; step(); }, last ? 550 : TIMING.step));
+          timers.push(setTimeout(function () { r.classList.remove("loading"); r.classList.add(last ? "fin" : "on"); i++; step(); }, last ? 500 : TIMING.step));
         })();
       }
       function runChannels() {
-        var el = document.getElementById("accChansB");
-        el.innerHTML = '<div class="chans">' + CHANNELS.map(function (c) { return '<div class="chan"><span class="cic">' + c.ic + '</span><span class="cn">' + esc(c.n) + '</span><span class="ck"></span></div>'; }).join("") + "</div>";
+        var el = document.getElementById("phaseCard");
+        el.innerHTML = phaseHTML("Matching ad channels", '<div class="chans">' + CHANNELS.map(function (c) { return '<div class="chan"><span class="cic">' + c.ic + '</span><span class="cn">' + esc(c.n) + '</span><span class="ck"></span></div>'; }).join("") + "</div>");
         var rows = el.querySelectorAll(".chan"), i = 0;
         (function step() {
-          if (i >= rows.length) { timers.push(setTimeout(function () { doneAcc("accChans", "Every channel ✓"); startAcc("accFound"); runFound(); }, 300)); return; }
+          if (i >= rows.length) { timers.push(setTimeout(function () { setStep(2); runFound(); }, 350)); return; }
           var c = rows[i]; c.classList.add("loading");
           timers.push(setTimeout(function () { c.classList.remove("loading"); c.classList.add("on"); c.querySelector(".ck").textContent = "✓"; i++; step(); }, TIMING.chan));
         })();
       }
       function runFound() {
-        var d = state.data, el = document.getElementById("accFoundB");
-        el.innerHTML = '<p class="found-sub">We pulled the signals that matter for high-converting creative — straight from your live page.</p><div class="found">' +
+        var d = state.data, el = document.getElementById("phaseCard");
+        var body = '<p class="found-sub">We pulled the signals that matter for high-converting creative — straight from your live page.</p><div class="found">' +
           d.found.map(function (f) { return '<div class="fcard"><span class="licon">' + licon(f.lab) + '</span><div class="fc-body"><div class="lab">' + f.lab + '</div><div class="big">' + f.big + '</div><div class="mut">' + f.mut + "</div></div></div>"; }).join("") +
           (d.note ? '<div class="note ' + d.note.cls + '">' + d.note.txt + "</div>" : "") + "</div>";
+        el.innerHTML = phaseHTML("What we found", body);
         var cards = el.querySelectorAll(".fcard, .note"), i = 0;
         (function fade() {
-          if (i >= cards.length) { timers.push(setTimeout(function () { doneAcc("accFound", d.found.length + " signals"); startAcc("accGen"); runGen(); }, 500)); return; }
+          if (i >= cards.length) { timers.push(setTimeout(function () { setStep(3); runGen(); }, 500)); return; }
           cards[i].classList.add("in"); i++; timers.push(setTimeout(fade, TIMING.found));
         })();
       }
       function runGen() {
-        var d = state.data, el = document.getElementById("accGenB");
+        var d = state.data, el = document.getElementById("phaseCard");
         var imgN = 0;
         var times = d.results.map(function (r) { if (kindOf(r.tag) === "video") return 40000; imgN++; return 11000 + imgN * 5000; });
-        el.innerHTML =
+        var body =
           '<div class="gen-note">⏳ Rendering takes a little while — images ~15–20s, video up to ~40s. You can close this tab; we’ll email everything to <b>' + esc(state.email) + '</b> the moment it’s ready.<br /><button class="gen-email" onclick="renderConfirm()">Email it to me instead →</button></div>' +
           '<div class="gens">' +
           d.results.map(function (r, n) { var k = kindOf(r.tag); var lbl = k === "video" ? "Rendering video… ~40s" : "Rendering image… ~20s"; return '<div class="gen skel" data-n="' + n + '"><div class="gen-media"><span class="rendering"><span class="mini-spin"></span> ' + lbl + '</span><span class="gpbar"><i></i></span></div><div class="gen-body"><h4></h4><div class="why"></div></div></div>'; }).join("") +
           '</div><div class="locked" id="lockedRow" style="display:none"></div><div class="unlock-row" id="unlockRow" style="display:none"></div>';
+        el.innerHTML = phaseHTML("Generating your creatives", body);
         var gens = el.querySelectorAll(".gen");
         d.results.forEach(function (r, idx) {
           var bar = gens[idx].querySelector(".gpbar i");
@@ -585,7 +584,7 @@
           }, times[idx]));
         });
         timers.push(setTimeout(function () {
-          readyAcc("accGen", "Ready");
+          setStep(4);
           var gn = el.querySelector(".gen-note"); if (gn) gn.style.display = "none";
           var lr = document.getElementById("lockedRow"); lr.style.display = "flex";
           lr.innerHTML = d.locked.map(function (l) { return '<span class="lock">🔒 ' + esc(l) + "</span>"; }).join("");
