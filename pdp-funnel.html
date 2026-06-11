@@ -164,6 +164,21 @@
       .run-badge .pic svg { width: 14px; height: 14px; display: block; }
       .loader h3 .pic { display: inline-block; vertical-align: -3px; margin: 0 4px; }
       .loader h3 .pic svg { width: 17px; height: 17px; }
+      .chans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .chan { display: flex; align-items: center; gap: 9px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,0.02); opacity: 0.4; transition: 0.35s; }
+      .chan.on { opacity: 1; background: rgba(255,255,255,0.05); border-color: rgba(122,51,255,0.4); }
+      .chan .cic { width: 24px; height: 24px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+      .chan .cic svg { width: 22px; height: 22px; }
+      .chan .cn { font-size: 12.5px; font-weight: 600; }
+      .chan .ck { margin-left: auto; width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 9px; color: #0d0a17; flex-shrink: 0; }
+      .chan.on .ck { background: var(--good); border-color: var(--good); }
+      @media (max-width: 560px) { .chans { grid-template-columns: 1fr 1fr; } }
+      .gen-note { font-size: 12.5px; color: var(--sub); line-height: 1.55; background: rgba(122,51,255,0.1); border: 1px solid rgba(122,51,255,0.25); border-radius: 12px; padding: 13px 15px; margin-bottom: 16px; }
+      .gen-note b { color: #fff; }
+      .gen-email { margin-top: 9px; background: transparent; border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: var(--pill); padding: 7px 16px; font-size: 12px; font-weight: 700; font-family: inherit; cursor: pointer; }
+      .gen-email:hover { background: rgba(255,255,255,0.07); }
+      .gpbar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,0.12); }
+      .gpbar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #7a33ff, #f24cf3); }
       @media (max-width: 640px) { .gens { grid-template-columns: 1fr; } .gen-media { aspect-ratio: 16/10; } }
       .locked { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
       .lock { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.2); border-radius: var(--pill); padding: 8px 13px; }
@@ -277,7 +292,7 @@
     </footer>
 
     <script>
-      var TIMING = { connect: 1300, fetch: 2700, chip: 560, found: 380, gen: 1600 };
+      var TIMING = { connect: 1600, fetch: 3600, chip: 720, chan: 640, found: 850 };
       var state = {};
       var timers = [];
       function ctimers() { timers.forEach(clearTimeout); timers = []; }
@@ -318,6 +333,12 @@
         if (kind === "aplus") return '<div class="mk mk-aplus"><div class="ap-img" style="background:' + grad + '"></div><div class="ap-col"><span class="ln w90"></span><span class="ln w70"></span><span class="ln w80"></span><span class="ln w50"></span></div></div>';
         return '<div class="mk mk-ad"><div class="ad-img" style="background:' + grad + '"></div><div class="ad-b"><span class="ln w80"></span><span class="ln w55"></span><span class="cta">Shop now</span></div></div>';
       }
+      var IG_SVG = '<svg viewBox="0 0 24 24"><defs><linearGradient id="igc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#feda75"/><stop offset=".5" stop-color="#d62976"/><stop offset="1" stop-color="#962fbf"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="url(#igc)" stroke-width="2"/><circle cx="12" cy="12" r="4.4" fill="none" stroke="url(#igc)" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.2" fill="#d62976"/></svg>';
+      var FB_SVG = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#1877f2"/><path d="M13 8.5h1.6V6.1H13c-1.6 0-2.5 1-2.5 2.6V10H9.1v2.4h1.4V19H13v-6.6h1.6l.4-2.4H13V9c0-.3.2-.5.5-.5z" fill="#fff"/></svg>';
+      var TT_SVG = '<svg viewBox="0 0 24 24"><path d="M14 3c.3 2.3 1.7 3.8 4 4v2.6c-1.4 0-2.7-.4-4-1.1v5.9c0 3-2.2 5.1-5 5.1-2.7 0-4.8-2-4.8-4.7 0-2.8 2.3-4.9 5.2-4.5v2.7c-.4-.1-.8-.2-1.2-.1-1 .1-1.6.9-1.5 2 .1 1 .9 1.7 1.9 1.6 1.1 0 1.7-.9 1.7-2V3H14z" fill="#fff"/></svg>';
+      var WEB_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#b794ff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg>';
+      var MAIL_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#b794ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg>';
+      var CHANNELS = [{ n: "Amazon", ic: PICON.amazon }, { n: "Instagram", ic: IG_SVG }, { n: "Facebook & Marketplace", ic: FB_SVG }, { n: "TikTok", ic: TT_SVG }, { n: "Your website", ic: WEB_SVG }, { n: "Email", ic: MAIL_SVG }];
       function parseBrand(u) {
         var host = (u || "").trim().replace(/^[a-z][a-z0-9+.\-]*:\/\//i, "").replace(/^\/+/, "").replace(/^www\./i, "").split(/[\/?#]/)[0] || "";
         var ok = /\.[a-z]{2,}/i.test(host);
@@ -384,7 +405,7 @@
             { lab: "Brand colours", big: "Sampled from imagery", mut: '<span class="sw">' + swHtml + "</span>" },
             { lab: "Opportunity", big: "Add video + paid creative", mut: "Most product pages have no video — the fastest conversion win" }
           ];
-          data.note = { cls: "lav", txt: "✦ We read whatever the page exposes (Open Graph / JSON-LD) and generate on-brand video + ad creative you can publish anywhere." };
+          data.note = null;
           data.results = [
             { tag: "VIDEO", title: "Product hero video", why: "<b>Why:</b> a short, on-brand hero video is the highest-impact upgrade to any product page." },
             { tag: "AD", title: "Social ad", why: "<b>Why:</b> a hook-first vertical cut built for paid feeds." },
@@ -443,7 +464,7 @@
           '<div class="run-head"><div class="run-logo" style="background:' + d.grad + '">' + (d.generic ? GLOBE : esc(d.brand.charAt(0))) + '</div>' +
             '<div class="run-meta"><div class="run-name">' + esc(d.brand) + '</div><div class="run-url">' + esc(d.url) + '</div></div>' +
             '<span class="run-badge">' + picon(d.platform) + (d.platform === "generic" ? "Product page" : esc(d.plabel)) + '</span></div>' +
-          '<div class="sec" id="secLoad"></div><div class="sec" id="secChips"></div><div class="sec" id="secFound"></div><div class="sec" id="secGen"></div>';
+          '<div class="sec" id="secLoad"></div><div class="sec" id="secChips"></div><div class="sec" id="secChans"></div><div class="sec" id="secFound"></div><div class="sec" id="secGen"></div>';
         runLoader();
       }
       function runLoader() {
@@ -459,43 +480,65 @@
         scrollSec(el);
         var chips = el.querySelectorAll(".chip"), i = 0;
         (function tick() {
-          if (i >= chips.length) { var t = document.getElementById("chipTitle"); if (t) t.innerHTML = '<span class="tk">✓</span> Page analyzed'; timers.push(setTimeout(runFound, 500)); return; }
+          if (i >= chips.length) { var t = document.getElementById("chipTitle"); if (t) t.innerHTML = '<span class="tk">✓</span> Page analyzed'; timers.push(setTimeout(runChannels, 500)); return; }
           chips[i].classList.add("on"); chips[i].querySelector(".dot").textContent = "✓"; i++;
           timers.push(setTimeout(tick, TIMING.chip));
+        })();
+      }
+      function runChannels() {
+        var el = document.getElementById("secChans");
+        el.innerHTML = '<div class="panel"><div class="sec-title" id="chanTitle">Matching ad channels</div><div class="chans">' +
+          CHANNELS.map(function (c) { return '<div class="chan"><span class="cic">' + c.ic + '</span><span class="cn">' + esc(c.n) + '</span><span class="ck"></span></div>'; }).join("") +
+          "</div></div>";
+        scrollSec(el);
+        var rows = el.querySelectorAll(".chan"), i = 0;
+        (function tick() {
+          if (i >= rows.length) { var t = document.getElementById("chanTitle"); if (t) t.innerHTML = '<span class="tk">✓</span> Ready for every channel'; timers.push(setTimeout(runFound, 600)); return; }
+          rows[i].classList.add("on"); rows[i].querySelector(".ck").textContent = "✓"; i++;
+          timers.push(setTimeout(tick, TIMING.chan));
         })();
       }
       function runFound() {
         var d = state.data, el = document.getElementById("secFound");
         el.innerHTML = '<div class="panel"><div class="sec-title"><span class="tk">✓</span> Here’s what we found</div><div class="found">' +
           d.found.map(function (f) { return '<div class="fcard"><span class="licon">' + licon(f.lab) + '</span><div class="fc-body"><div class="lab">' + f.lab + '</div><div class="big">' + f.big + '</div><div class="mut">' + f.mut + "</div></div></div>"; }).join("") +
-          '<div class="note ' + d.note.cls + '">' + d.note.txt + "</div></div></div>";
+          (d.note ? '<div class="note ' + d.note.cls + '">' + d.note.txt + "</div>" : "") + "</div></div>";
         scrollSec(el);
         var cards = el.querySelectorAll(".fcard, .note"), i = 0;
         (function fade() { if (i >= cards.length) { timers.push(setTimeout(runGen, 600)); return; } cards[i].classList.add("in"); i++; timers.push(setTimeout(fade, TIMING.found)); })();
       }
       function runGen() {
         var d = state.data, el = document.getElementById("secGen");
-        el.innerHTML = '<div class="panel"><div class="sec-title" id="genTitle">Generating your creatives…</div><div class="gens">' +
-          d.results.map(function (r, n) { return '<div class="gen skel" data-n="' + n + '"><div class="gen-media"><span class="rendering"><span class="mini-spin"></span> Rendering…</span></div><div class="gen-body"><h4></h4><div class="why"></div></div></div>'; }).join("") +
+        var imgN = 0;
+        var times = d.results.map(function (r) { if (kindOf(r.tag) === "video") return 40000; imgN++; return 11000 + imgN * 5000; });
+        el.innerHTML = '<div class="panel">' +
+          '<div class="sec-title" id="genTitle">Generating your creatives…</div>' +
+          '<div class="gen-note">⏳ Rendering takes a little while — images ~15–20s, video up to ~40s. You can close this tab; we’ll email everything to <b>' + esc(state.email) + '</b> the moment it’s ready.<br /><button class="gen-email" onclick="renderConfirm()">Email it to me instead →</button></div>' +
+          '<div class="gens">' +
+          d.results.map(function (r, n) { var k = kindOf(r.tag); var lbl = k === "video" ? "Rendering video… ~40s" : "Rendering image… ~20s"; return '<div class="gen skel" data-n="' + n + '"><div class="gen-media"><span class="rendering"><span class="mini-spin"></span> ' + lbl + '</span><span class="gpbar"><i></i></span></div><div class="gen-body"><h4></h4><div class="why"></div></div></div>'; }).join("") +
           '</div><div class="locked" id="lockedRow" style="display:none"></div><div class="unlock-row" id="unlockRow" style="display:none"></div></div>';
         scrollSec(el);
-        var gens = el.querySelectorAll(".gen"), i = 0;
-        (function reveal() {
-          if (i >= gens.length) {
-            document.getElementById("genTitle").innerHTML = '<span class="tk">✓</span> 3 creatives ready — preview';
-            var lr = document.getElementById("lockedRow"); lr.style.display = "flex";
-            lr.innerHTML = d.locked.map(function (l) { return '<span class="lock">🔒 ' + esc(l) + "</span>"; }).join("");
-            var ur = document.getElementById("unlockRow"); ur.style.display = "block";
-            ur.innerHTML = '<button class="btn btn-primary btn-lg" onclick="renderConfirm()">Unlock my full creative set →</button><p class="fine">' + d.locked.length + ' more variants + editable files, emailed to you free.</p>';
-            scrollSec(ur); return;
-          }
-          var g = gens[i], r = d.results[i], k = kindOf(r.tag);
-          g.classList.remove("skel");
-          g.querySelector(".gen-media").innerHTML = '<span class="gtag">' + KICON[k] + r.tag + '</span>' + mockVisual(k, d.grad);
-          g.querySelector("h4").textContent = r.title;
-          g.querySelector(".why").innerHTML = r.why; i++;
-          timers.push(setTimeout(reveal, TIMING.gen));
-        })();
+        var gens = el.querySelectorAll(".gen");
+        d.results.forEach(function (r, idx) {
+          var bar = gens[idx].querySelector(".gpbar i");
+          if (bar) requestAnimationFrame(function () { bar.style.transition = "width " + (times[idx] / 1000) + "s linear"; bar.style.width = "100%"; });
+          timers.push(setTimeout(function () {
+            var g = gens[idx], k = kindOf(r.tag);
+            g.classList.remove("skel");
+            g.querySelector(".gen-media").innerHTML = '<span class="gtag">' + KICON[k] + r.tag + '</span>' + mockVisual(k, d.grad);
+            g.querySelector("h4").textContent = r.title;
+            g.querySelector(".why").innerHTML = r.why;
+          }, times[idx]));
+        });
+        timers.push(setTimeout(function () {
+          document.getElementById("genTitle").innerHTML = '<span class="tk">✓</span> Creatives ready — preview';
+          var gn = el.querySelector(".gen-note"); if (gn) gn.style.display = "none";
+          var lr = document.getElementById("lockedRow"); lr.style.display = "flex";
+          lr.innerHTML = d.locked.map(function (l) { return '<span class="lock">🔒 ' + esc(l) + "</span>"; }).join("");
+          var ur = document.getElementById("unlockRow"); ur.style.display = "block";
+          ur.innerHTML = '<button class="btn btn-primary btn-lg" onclick="renderConfirm()">Unlock my full creative set →</button><p class="fine">' + d.locked.length + ' more variants + editable files, emailed to you free.</p>';
+          scrollSec(ur);
+        }, Math.max.apply(null, times) + 400));
       }
       function renderConfirm() {
         ctimers();
