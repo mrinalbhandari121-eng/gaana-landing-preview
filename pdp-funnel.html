@@ -463,7 +463,7 @@
           '<form id="capForm">' +
             '<label class="flabel">Your email</label>' +
             '<input class="field" id="capEmail" type="email" required placeholder="you@yourbrand.com" autocomplete="email" />' +
-            '<div class="reveal" id="urlBlock">' +
+            '<div id="urlBlock">' +
               '<label class="flabel">Your product page URL</label>' +
               '<input class="field" id="capUrl" type="text" placeholder="https://…/your-product" />' +
               '<div class="examples"><span class="ex" data-u="https://www.amazon.com/dp/B0BRANDSEED">Try an Amazon link</span><span class="ex" data-u="https://your-brand.com/products/the-hero-product">Try a Shopify link</span></div>' +
@@ -471,14 +471,13 @@
             '<button class="btn btn-primary btn-lg row-btn" id="capBtn" type="submit" disabled>Make my video →</button>' +
           '</form>' +
           '<p class="fine">Free preview · no card needed · we only read your page.</p></div>';
-        var em = document.getElementById("capEmail"), url = document.getElementById("capUrl"), btn = document.getElementById("capBtn"), block = document.getElementById("urlBlock"), shown = false;
+        var em = document.getElementById("capEmail"), url = document.getElementById("capUrl"), btn = document.getElementById("capBtn");
         function emValid() { return /.+@.+\..+/.test(em.value.trim()); }
         function urlValid() { return url.value.trim().length >= 4; }
         function refresh() { btn.disabled = !(emValid() && urlValid()); }
-        function revealUrl() { if (!shown) { shown = true; block.classList.add("show"); setTimeout(function () { url.focus(); }, 280); } }
-        em.addEventListener("input", function () { if (emValid()) revealUrl(); refresh(); });
+        em.addEventListener("input", refresh);
         url.addEventListener("input", refresh);
-        Array.prototype.forEach.call(stage.querySelectorAll(".ex"), function (e) { e.addEventListener("click", function () { revealUrl(); url.value = e.getAttribute("data-u"); refresh(); }); });
+        Array.prototype.forEach.call(stage.querySelectorAll(".ex"), function (e) { e.addEventListener("click", function () { url.value = e.getAttribute("data-u"); refresh(); }); });
         document.getElementById("capForm").addEventListener("submit", function (ev) { ev.preventDefault(); if (btn.disabled) return; state.email = em.value.trim(); state.url = url.value.trim(); state.data = analyzePDP(state.url); renderRun(); });
         em.focus();
       }
