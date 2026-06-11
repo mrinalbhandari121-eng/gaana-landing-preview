@@ -489,7 +489,7 @@
         stage.className = "stage wide";
         stage.innerHTML =
           '<div class="run-head"><div class="run-logo" style="background:' + d.grad + '">' + (d.generic ? GLOBE : esc(d.brand.charAt(0))) + '</div>' +
-            '<div class="run-meta"><div class="run-name">' + esc(d.brand) + '</div><div class="run-url">' + esc(d.url) + '</div></div>' +
+            '<div class="run-meta"><div class="run-name">' + esc(d.brand) + '</div></div>' +
             '<span class="run-badge">' + picon(d.platform) + (d.platform === "generic" ? "Product page" : esc(d.plabel)) + '</span></div>' +
           '<div class="sec" id="secAnalyze"></div><div class="sec" id="secChans"></div><div class="sec" id="secFound"></div><div class="sec" id="secGen"></div>';
         runAnalyze();
