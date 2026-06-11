@@ -107,6 +107,8 @@
       .chip.on { color: #fff; background: rgba(255,255,255,0.05); border-color: rgba(122,51,255,0.4); }
       .chip .dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #0d0a17; transition: 0.25s; }
       .chip.on .dot { background: var(--good); border-color: var(--good); }
+      .chip.loading { color: #fff; background: rgba(255,255,255,0.04); border-color: rgba(122,51,255,0.3); }
+      .chip.loading .dot { border-color: rgba(122,51,255,0.3); border-top-color: #b794ff; animation: sp 0.7s linear infinite; }
       .chip b { font-weight: 700; color: #cbb4ff; }
       @media (max-width: 560px) { .chips { grid-template-columns: 1fr; } }
       .found { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -175,6 +177,8 @@
       .chan .cn { font-size: 12.5px; font-weight: 600; }
       .chan .ck { margin-left: auto; width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 9px; color: #0d0a17; flex-shrink: 0; }
       .chan.on .ck { background: var(--good); border-color: var(--good); }
+      .chan.loading { opacity: 1; background: rgba(255,255,255,0.04); border-color: rgba(122,51,255,0.3); }
+      .chan.loading .ck { border-color: rgba(122,51,255,0.3); border-top-color: #b794ff; animation: sp 0.7s linear infinite; }
       @media (max-width: 560px) { .chans { grid-template-columns: 1fr 1fr; } }
       .gen-note { font-size: 12.5px; color: var(--sub); line-height: 1.55; background: rgba(122,51,255,0.1); border: 1px solid rgba(122,51,255,0.25); border-radius: 12px; padding: 13px 15px; margin-bottom: 16px; }
       .gen-note b { color: #fff; }
@@ -295,7 +299,7 @@
     </footer>
 
     <script>
-      var TIMING = { connect: 1600, fetch: 3800, chip: 600, chan: 620, found: 820 };
+      var TIMING = { connect: 1600, fetch: 3800, chip: 720, chan: 700, found: 820 };
       var state = {};
       var timers = [];
       function ctimers() { timers.forEach(clearTimeout); timers = []; }
@@ -403,7 +407,7 @@
           ];
           data.locked = ["TikTok cut", "Email hero GIF", "Story ad", "Bundle offer", "Founder cut", "Retargeting ad"];
         } else {
-          data.chips = ["Page title &amp; price", "Product images", "Open Graph / JSON-LD data", "Description text", "Meta tags &amp; share preview", "Structured product schema", "Detected page: " + esc(b.host || "your site")];
+          data.chips = ["Page title &amp; price", "Product images", "Open Graph / JSON-LD data", "Description text", "Meta tags &amp; share preview", "Structured product schema", "Detected page: " + esc(b.ok ? b.host : "your site")];
           data.found = [
             { lab: "Product", big: esc(b.brand) + " product", mut: "Pulled from Open Graph &amp; structured data on the page" },
             { lab: "Media", big: imgs + " images", mut: "We’ll build a hero video + social ad variants from these" },
@@ -489,10 +493,10 @@
           d.chips.map(function (c) { return '<div class="chip"><span class="dot"></span><span>' + c + "</span></div>"; }).join("") + "</div></div>";
         scrollSec(el);
         var chips = el.querySelectorAll(".chip"), i = 0;
-        (function tick() {
+        (function step() {
           if (i >= chips.length) { var t = document.getElementById("chipTitle"); if (t) t.innerHTML = '<span class="tk">✓</span> Page analyzed'; timers.push(setTimeout(runChannels, 500)); return; }
-          chips[i].classList.add("on"); chips[i].querySelector(".dot").textContent = "✓"; i++;
-          timers.push(setTimeout(tick, TIMING.chip));
+          var c = chips[i]; c.classList.add("loading");
+          timers.push(setTimeout(function () { c.classList.remove("loading"); c.classList.add("on"); c.querySelector(".dot").textContent = "✓"; i++; step(); }, TIMING.chip));
         })();
       }
       function runChannels() {
@@ -502,10 +506,10 @@
           "</div></div>";
         scrollSec(el);
         var rows = el.querySelectorAll(".chan"), i = 0;
-        (function tick() {
+        (function step() {
           if (i >= rows.length) { var t = document.getElementById("chanTitle"); if (t) t.innerHTML = '<span class="tk">✓</span> Ready for every channel'; timers.push(setTimeout(runFound, 600)); return; }
-          rows[i].classList.add("on"); rows[i].querySelector(".ck").textContent = "✓"; i++;
-          timers.push(setTimeout(tick, TIMING.chan));
+          var c = rows[i]; c.classList.add("loading");
+          timers.push(setTimeout(function () { c.classList.remove("loading"); c.classList.add("on"); c.querySelector(".ck").textContent = "✓"; i++; step(); }, TIMING.chan));
         })();
       }
       function runFound() {
