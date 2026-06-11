@@ -47,7 +47,7 @@
       .nav .btn { padding: 11px 22px; font-size: 14px; }
       @media (max-width: 1000px) { .nav-links { display: none; } }
       /* hero — centered */
-      .hero { position: relative; overflow: hidden; min-height: calc(100vh - 78px); display: flex; align-items: center; justify-content: center; padding: 56px 0; }
+      .hero { position: relative; overflow: hidden; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 56px 0; }
       .hero:before { content: ""; position: absolute; width: 900px; height: 640px; left: 50%; top: 2%; transform: translateX(-50%); background: radial-gradient(circle, rgba(122, 51, 255, 0.4), rgba(122, 51, 255, 0) 64%); filter: blur(18px); pointer-events: none; }
       .hero:after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(circle at 50% 42%, #000, transparent 72%); pointer-events: none; }
       .hero-c { position: relative; z-index: 2; text-align: center; max-width: 880px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; padding: 0 24px; }
@@ -177,23 +177,6 @@
     </style>
   </head>
   <body>
-    <nav class="nav">
-      <div class="wrap nav-in">
-        <a class="nav-logo" href="#" onclick="goHome();return false"><span class="mk">g</span> GaanaAI</a>
-        <div class="nav-links">
-          <a href="#">Case Studies</a>
-          <a href="#">Blog</a>
-          <a href="#">Resources</a>
-          <a href="#">About</a>
-          <a href="#" onclick="showGallery();return false">Sample Videos</a>
-        </div>
-        <div class="nav-right">
-          <a class="login" href="#">Login</a>
-          <a class="btn btn-primary" href="#" onclick="start();return false">Book a Demo</a>
-        </div>
-      </div>
-    </nav>
-
     <main class="main">
       <!-- LANDING -->
       <section id="landing">
