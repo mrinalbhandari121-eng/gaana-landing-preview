@@ -111,6 +111,23 @@
       .chip.loading .dot { border-color: rgba(122,51,255,0.3); border-top-color: #b794ff; animation: sp 0.7s linear infinite; }
       .chip b { font-weight: 700; color: #cbb4ff; }
       @media (max-width: 560px) { .chips { grid-template-columns: 1fr; } }
+      .tl { padding: 4px 2px 8px; }
+      .tl-head { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+      .tl-head .chev { color: var(--sub); font-size: 12px; }
+      .tl-head .pic { display: inline-flex; }
+      .tl-head .pic svg { width: 15px; height: 15px; vertical-align: -2px; }
+      .tl-list { position: relative; }
+      .tl-list:before { content: ""; position: absolute; left: 12px; top: 16px; bottom: 18px; width: 1.5px; background: var(--line); }
+      .tl-row { display: flex; align-items: center; gap: 13px; padding: 6px 0; position: relative; }
+      .tl-node { width: 25px; height: 25px; border-radius: 7px; background: #171226; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: rgba(255,255,255,0.4); position: relative; z-index: 1; }
+      .tl-node svg { width: 13px; height: 13px; }
+      .tl-lbl { font-size: 13.5px; color: rgba(255,255,255,0.42); transition: color 0.3s; }
+      .tl-row.loading .tl-node { border: 2px solid rgba(122,51,255,0.3); border-top-color: #b794ff; animation: sp 0.7s linear infinite; }
+      .tl-row.loading .tl-node svg { opacity: 0; }
+      .tl-row.on .tl-lbl { color: #fff; }
+      .tl-row.on .tl-node { color: #b794ff; border-color: rgba(122,51,255,0.4); background: rgba(122,51,255,0.12); }
+      .tl-row.fin .tl-lbl { color: #fff; font-weight: 700; }
+      .tl-row.fin .tl-node { color: var(--good); border-color: var(--good); background: rgba(40,214,132,0.14); }
       .found { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
       .fcard { border: 1px solid var(--line); border-radius: 14px; padding: 16px; opacity: 0; transform: translateY(8px); transition: opacity 0.45s, transform 0.45s; background: rgba(255,255,255,0.02); }
       .fcard.in { opacity: 1; transform: none; }
@@ -299,7 +316,7 @@
     </footer>
 
     <script>
-      var TIMING = { connect: 1600, fetch: 3800, chip: 720, chan: 700, found: 820 };
+      var TIMING = { step: 1150, chan: 700, found: 820 };
       var state = {};
       var timers = [];
       function ctimers() { timers.forEach(clearTimeout); timers = []; }
@@ -474,29 +491,28 @@
           '<div class="run-head"><div class="run-logo" style="background:' + d.grad + '">' + (d.generic ? GLOBE : esc(d.brand.charAt(0))) + '</div>' +
             '<div class="run-meta"><div class="run-name">' + esc(d.brand) + '</div><div class="run-url">' + esc(d.url) + '</div></div>' +
             '<span class="run-badge">' + picon(d.platform) + (d.platform === "generic" ? "Product page" : esc(d.plabel)) + '</span></div>' +
-          '<div class="sec" id="secLoad"></div><div class="sec" id="secChips"></div><div class="sec" id="secChans"></div><div class="sec" id="secFound"></div><div class="sec" id="secGen"></div>';
-        runLoader();
+          '<div class="sec" id="secAnalyze"></div><div class="sec" id="secChans"></div><div class="sec" id="secFound"></div><div class="sec" id="secGen"></div>';
+        runAnalyze();
       }
-      function runLoader() {
-        var d = state.data, el = document.getElementById("secLoad");
-        el.innerHTML = '<div class="panel loader"><div class="spin"></div><h3>Reading your ' + picon(d.platform) + esc(d.plabel) + ' page…</h3><div class="st" id="loadSt">Connecting to your link</div><div class="loadbar"><i></i></div></div>';
-        var msgs = ["Connecting to your link", "Fetching the page", "Parsing product data", "Reading reviews & ratings", "Sampling imagery & layout"];
-        var st = document.getElementById("loadSt"), bar = el.querySelector(".loadbar i"), i = 0;
-        if (bar) requestAnimationFrame(function () { bar.style.transition = "width " + (TIMING.fetch / 1000) + "s linear"; bar.style.width = "100%"; });
-        var iv = setInterval(function () { i++; if (st && msgs[i]) st.textContent = msgs[i]; }, TIMING.fetch / msgs.length);
-        timers.push(iv);
-        timers.push(setTimeout(function () { clearInterval(iv); el.innerHTML = ""; runChips(); }, TIMING.fetch));
+      var FILE_IC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/></svg>';
+      var CIRCLE_IC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.4 2.4 4.6-5"/></svg>';
+      function analyzeSteps(p) {
+        if (p === "amazon") return ["Fetching the Amazon listing", "Reading images & A+ content", "Reading reviews, ratings & Q&A", "Scanning marketplace compliance"];
+        if (p === "shopify") return ["Fetching the Shopify product", "Reading variants & brand kit", "Reading reviews & offers", "Scanning theme & media"];
+        return ["Fetching the page", "Reading product details", "Reading description & schema", "Reading meta tags & images"];
       }
-      function runChips() {
-        var d = state.data, el = document.getElementById("secChips");
-        el.innerHTML = '<div class="panel"><div class="sec-title" id="chipTitle">Analyzing the page</div><div class="chips">' +
-          d.chips.map(function (c) { return '<div class="chip"><span class="dot"></span><span>' + c + "</span></div>"; }).join("") + "</div></div>";
+      function runAnalyze() {
+        var d = state.data, el = document.getElementById("secAnalyze");
+        var rows = analyzeSteps(d.platform).map(function (s) { return '<div class="tl-row"><span class="tl-node">' + FILE_IC + '</span><span class="tl-lbl">' + s + "</span></div>"; }).join("");
+        rows += '<div class="tl-row tl-done"><span class="tl-node">' + CIRCLE_IC + '</span><span class="tl-lbl">Done</span></div>';
+        el.innerHTML = '<div class="tl"><div class="tl-head">Analyzing your ' + picon(d.platform) + esc(d.plabel) + ' page <span class="chev">⌄</span></div><div class="tl-list">' + rows + "</div></div>";
         scrollSec(el);
-        var chips = el.querySelectorAll(".chip"), i = 0;
+        var all = el.querySelectorAll(".tl-row"), i = 0;
         (function step() {
-          if (i >= chips.length) { var t = document.getElementById("chipTitle"); if (t) t.innerHTML = '<span class="tk">✓</span> Page analyzed'; timers.push(setTimeout(runChannels, 500)); return; }
-          var c = chips[i]; c.classList.add("loading");
-          timers.push(setTimeout(function () { c.classList.remove("loading"); c.classList.add("on"); c.querySelector(".dot").textContent = "✓"; i++; step(); }, TIMING.chip));
+          if (i >= all.length) { timers.push(setTimeout(runChannels, 450)); return; }
+          var r = all[i], last = i === all.length - 1;
+          r.classList.add("loading");
+          timers.push(setTimeout(function () { r.classList.remove("loading"); r.classList.add(last ? "fin" : "on"); i++; step(); }, last ? 550 : TIMING.step));
         })();
       }
       function runChannels() {
