@@ -97,6 +97,9 @@
       @keyframes sp { to { transform: rotate(360deg); } }
       .loader h3 { font-size: 18px; font-weight: 800; margin: 0 0 5px; }
       .loader .st { font-size: 13.5px; color: var(--sub); min-height: 18px; }
+      .loadbar { width: 200px; max-width: 60%; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); margin: 14px auto 0; overflow: hidden; }
+      .loadbar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #7a33ff, #f24cf3); border-radius: 2px; }
+      .found-sub { font-size: 13px; color: var(--sub); line-height: 1.5; margin: -4px 0 16px; }
       .sec-title { font-size: 13px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--sub); margin: 0 0 14px; display: flex; align-items: center; gap: 8px; }
       .sec-title .tk { width: 18px; height: 18px; border-radius: 50%; background: var(--good); color: #0d0a17; font-size: 10px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
       .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -292,7 +295,7 @@
     </footer>
 
     <script>
-      var TIMING = { connect: 1600, fetch: 3600, chip: 720, chan: 640, found: 850 };
+      var TIMING = { connect: 1600, fetch: 3800, chip: 600, chan: 620, found: 820 };
       var state = {};
       var timers = [];
       function ctimers() { timers.forEach(clearTimeout); timers = []; }
@@ -363,14 +366,16 @@
         var data = { url: u, platform: p, plabel: PLABEL[p], host: b.host, brand: b.brand, grad: b.grad, sw: b.sw, generic: !b.ok };
         var swHtml = b.sw.map(function (c) { return '<i style="background:' + c + '"></i>'; }).join("");
         if (p === "amazon") {
-          data.chips = ["Title &amp; category breadcrumb", "Price &amp; buy box", imgs + " product images · <b>no video</b>", rating.toFixed(1) + "★ · " + reviews.toLocaleString() + " reviews", "Frequent review words", "5 feature bullets", "A+ content tier: <b>Basic</b>", "Brand colours from images"];
+          data.chips = ["Title &amp; category breadcrumb", "Price &amp; buy box", imgs + " product images · <b>no video</b>", rating.toFixed(1) + "★ · " + reviews.toLocaleString() + " reviews", "Frequent review words", "5 feature bullets", "A+ content tier: <b>Basic</b>", "Q&amp;A — 3 unanswered", "Main image: white background", "Bestseller rank detected", "Returns drivers from reviews", "Competitor price band"];
           data.found = [
             { lab: "Product", big: esc(b.brand) + " hero SKU", mut: "Home &amp; Kitchen › Bestseller breadcrumb · buy-box price detected" },
-            { lab: "Media", big: imgs + " images, no video", mut: "Listings with video convert up to 80% better — biggest open opportunity" },
-            { lab: "Reviews &amp; rating", big: '<span class="stars">★★★★☆</span> ' + rating.toFixed(1) + " · " + reviews.toLocaleString(), mut: '<div class="rwords"><span class="rword">easy to use</span><span class="rword">great value</span><span class="rword">as described</span></div>' },
+            { lab: "Media", big: imgs + " images, no video", mut: "Listings with video convert up to 80% better — your single biggest open opportunity" },
+            { lab: "Reviews &amp; rating", big: '<span class="stars">★★★★☆</span> ' + rating.toFixed(1) + " · " + reviews.toLocaleString(), mut: '<div class="rwords"><span class="rword">easy to use</span><span class="rword">great value</span><span class="rword">as described</span><span class="rword">good quality</span></div>' },
             { lab: "Listing content", big: "5 feature bullets · A+ Basic", mut: "Enough copy to script a benefit-led video and an upgraded A+ module" },
-            { lab: "Brand colours", big: "Sampled from product imagery", mut: '<span class="sw">' + swHtml + "</span>" },
-            { lab: "Opportunity", big: "Add listing video + A+ Premium", mut: "Video + richer A+ lifts conversion and reduces “doesn’t match photos” returns" }
+            { lab: "Customer questions", big: "3 unanswered Q&amp;A", mut: "Common doubts we can resolve on-screen — fit, durability, how it works" },
+            { lab: "Returns risk", big: "“Doesn’t match photos”", mut: "Top return driver in your category — video sets accurate expectations" },
+            { lab: "Compliance", big: "Marketplace-safe assets", mut: "White main image ✓ · no price/badges baked in · no claims to flag" },
+            { lab: "Opportunity", big: "Add listing video + A+ Premium", mut: "Video + richer A+ lifts conversion and cuts returns" }
           ];
           data.note = { cls: "", txt: "✓ <b>Marketplace-safe by default:</b> no pricing, badges or external links baked into images, no medical claims, white main image — built to pass Amazon review." };
           data.results = [
@@ -380,14 +385,15 @@
           ];
           data.locked = ["TikTok hook", "Lifestyle image set", "Comparison card", "Bundle promo", "Review reel", "Mobile A+ variant"];
         } else if (p === "shopify") {
-          data.chips = ["Product title &amp; price", "4 variants detected", "Brand kit: logo, colours, fonts", imgs + " images · 1 video", "Long-form description", "Reviews app: <b>Judge.me</b>", "Theme brand colours", "Offers &amp; urgency potential"];
+          data.chips = ["Product title &amp; price", "4 variants detected", imgs + " images · 1 video", "Long-form description", "Reviews app: <b>Judge.me</b>", "Brand kit: logo &amp; fonts", "Offers &amp; urgency potential", "Trust badges &amp; guarantees", "Related products / upsells", "Subscription option"];
           data.found = [
             { lab: "Product", big: esc(b.brand) + " · 4 variants", mut: "Price, options and inventory read straight from the product JSON" },
-            { lab: "Brand kit", big: "Logo, colours &amp; fonts", mut: "Shopify theme exposes your full brand kit — creative stays perfectly on-brand" },
-            { lab: "Media", big: imgs + " images, 1 video", mut: "Good base assets — we’ll cut a PDP hero loop + social variants" },
+            { lab: "Brand kit", big: "Logo &amp; fonts", mut: "Your Shopify theme exposes the brand assets — creative stays perfectly on-brand" },
+            { lab: "Media", big: imgs + " images, 1 video", mut: "Solid base assets — we’ll cut a PDP hero loop + social variants" },
             { lab: "Description", big: "Long-form story", mut: "Founder voice + benefits to script an authentic, hook-first video" },
-            { lab: "Brand colours", big: "From your theme CSS", mut: '<span class="sw">' + swHtml + "</span>" },
-            { lab: "Opportunity", big: "Off-marketplace freedom", mut: "Pricing, offers, urgency, founder story, external CTAs — all fair game" }
+            { lab: "Reviews", big: "Judge.me · " + rating.toFixed(1) + "★", mut: "Social proof we can surface as on-screen testimonial moments" },
+            { lab: "Offers", big: "Urgency &amp; bundles", mut: "Limited offers, founder story and external CTAs — all fair game off-marketplace" },
+            { lab: "Opportunity", big: "Full creative freedom", mut: "An autoplay PDP hero + paid social set is the highest-impact upgrade" }
           ];
           data.note = { cls: "lav", txt: "✦ <b>Off-marketplace — full creative freedom:</b> show pricing, limited offers, urgency, founder story and external CTAs you could never use on a marketplace." };
           data.results = [
@@ -397,12 +403,12 @@
           ];
           data.locked = ["TikTok cut", "Email hero GIF", "Story ad", "Bundle offer", "Founder cut", "Retargeting ad"];
         } else {
-          data.chips = ["Page title &amp; price", "Product images", "Open Graph / JSON-LD data", "Description text", "Brand colours from imagery", "Detected page: " + esc(b.host || "your site")];
+          data.chips = ["Page title &amp; price", "Product images", "Open Graph / JSON-LD data", "Description text", "Meta tags &amp; share preview", "Structured product schema", "Detected page: " + esc(b.host || "your site")];
           data.found = [
             { lab: "Product", big: esc(b.brand) + " product", mut: "Pulled from Open Graph &amp; structured data on the page" },
             { lab: "Media", big: imgs + " images", mut: "We’ll build a hero video + social ad variants from these" },
             { lab: "Description", big: "Page copy detected", mut: "Enough to script a benefit-led, on-brand video" },
-            { lab: "Brand colours", big: "Sampled from imagery", mut: '<span class="sw">' + swHtml + "</span>" },
+            { lab: "Share preview", big: "Open Graph image &amp; title", mut: "We repurpose your existing assets into video + ad creative" },
             { lab: "Opportunity", big: "Add video + paid creative", mut: "Most product pages have no video — the fastest conversion win" }
           ];
           data.note = null;
@@ -469,9 +475,13 @@
       }
       function runLoader() {
         var d = state.data, el = document.getElementById("secLoad");
-        el.innerHTML = '<div class="panel loader"><div class="spin"></div><h3>Reading your ' + picon(d.platform) + esc(d.plabel) + ' page…</h3><div class="st" id="loadSt">Connecting to your link</div></div>';
-        timers.push(setTimeout(function () { var s = document.getElementById("loadSt"); if (s) s.textContent = "Fetching the page"; }, TIMING.connect));
-        timers.push(setTimeout(function () { el.innerHTML = ""; runChips(); }, TIMING.fetch));
+        el.innerHTML = '<div class="panel loader"><div class="spin"></div><h3>Reading your ' + picon(d.platform) + esc(d.plabel) + ' page…</h3><div class="st" id="loadSt">Connecting to your link</div><div class="loadbar"><i></i></div></div>';
+        var msgs = ["Connecting to your link", "Fetching the page", "Parsing product data", "Reading reviews & ratings", "Sampling imagery & layout"];
+        var st = document.getElementById("loadSt"), bar = el.querySelector(".loadbar i"), i = 0;
+        if (bar) requestAnimationFrame(function () { bar.style.transition = "width " + (TIMING.fetch / 1000) + "s linear"; bar.style.width = "100%"; });
+        var iv = setInterval(function () { i++; if (st && msgs[i]) st.textContent = msgs[i]; }, TIMING.fetch / msgs.length);
+        timers.push(iv);
+        timers.push(setTimeout(function () { clearInterval(iv); el.innerHTML = ""; runChips(); }, TIMING.fetch));
       }
       function runChips() {
         var d = state.data, el = document.getElementById("secChips");
@@ -500,7 +510,7 @@
       }
       function runFound() {
         var d = state.data, el = document.getElementById("secFound");
-        el.innerHTML = '<div class="panel"><div class="sec-title"><span class="tk">✓</span> Here’s what we found</div><div class="found">' +
+        el.innerHTML = '<div class="panel"><div class="sec-title"><span class="tk">✓</span> Here’s what we found</div><p class="found-sub">We pulled the signals that matter for high-converting creative — straight from your live page.</p><div class="found">' +
           d.found.map(function (f) { return '<div class="fcard"><span class="licon">' + licon(f.lab) + '</span><div class="fc-body"><div class="lab">' + f.lab + '</div><div class="big">' + f.big + '</div><div class="mut">' + f.mut + "</div></div></div>"; }).join("") +
           (d.note ? '<div class="note ' + d.note.cls + '">' + d.note.txt + "</div>" : "") + "</div></div>";
         scrollSec(el);
