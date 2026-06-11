@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="1140" viewBox="0 0 390 1140" fill="none">
+  <defs>
+    <linearGradient id="glm1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#EDE3FF"/><stop offset="100%" stop-color="#D9C8FF"/></linearGradient>
+    <linearGradient id="glm2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#EFE7FF"/><stop offset="100%" stop-color="#C9B4FF"/></linearGradient>
+    <linearGradient id="glm3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E7E3FF"/><stop offset="100%" stop-color="#CDC4FF"/></linearGradient>
+  </defs>
+  <rect width="390" height="1140" fill="#140F28"/>
+
+  <rect x="24" y="38" width="26" height="26" rx="8" fill="#7A33FF"/>
+  <text x="37" y="56" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#FFFFFF" text-anchor="middle">g</text>
+  <text x="58" y="56" font-family="Inter, sans-serif" font-size="17" font-weight="800" fill="#FFFFFF">GaanaAI</text>
+
+  <text x="195" y="130" font-family="Inter, sans-serif" font-size="24" font-weight="800" fill="#FFFFFF" text-anchor="middle">Sample videos</text>
+  <text x="195" y="158" font-family="Inter, sans-serif" font-size="13.5" fill="#FFFFFF" fill-opacity="0.6" text-anchor="middle">All from a single product URL.</text>
+
+  <g font-family="Inter, sans-serif">
+    <!-- row 1 -->
+    <rect x="20" y="200" width="167" height="248" rx="12" fill="#19142E" stroke="#FFFFFF" stroke-opacity="0.09"/>
+    <rect x="20" y="200" width="167" height="184" rx="12" fill="url(#glm1)"/>
+    <rect x="30" y="210" width="68" height="20" rx="6" fill="#2C234D" fill-opacity="0.62"/><text x="64" y="224" font-size="10" font-weight="800" fill="#FFFFFF" text-anchor="middle">Amazon</text>
+    <circle cx="103" cy="292" r="20" fill="#FFFFFF" fill-opacity="0.94"/><path d="M98 284 L113 292 L98 300 Z" fill="#7A33FF"/>
+    <text x="34" y="412" font-size="13" font-weight="700" fill="#FFFFFF">Earthwise PetLawn</text>
+    <text x="34" y="431" font-size="11" fill="#FFFFFF" fill-opacity="0.6">Listing video</text>
+
+    <rect x="203" y="200" width="167" height="248" rx="12" fill="#19142E" stroke="#FFFFFF" stroke-opacity="0.09"/>
+    <rect x="203" y="200" width="167" height="184" rx="12" fill="url(#glm2)"/>
+    <rect x="213" y="210" width="64" height="20" rx="6" fill="#2C234D" fill-opacity="0.62"/><text x="245" y="224" font-size="10" font-weight="800" fill="#FFFFFF" text-anchor="middle">Shopify</text>
+    <circle cx="286" cy="292" r="20" fill="#FFFFFF" fill-opacity="0.94"/><path d="M281 284 L296 292 L281 300 Z" fill="#7A33FF"/>
+    <text x="217" y="412" font-size="13" font-weight="700" fill="#FFFFFF">Lumera Skincare</text>
+    <text x="217" y="431" font-size="11" fill="#FFFFFF" fill-opacity="0.6">PDP hero loop</text>
+
+    <!-- row 2 -->
+    <rect x="20" y="470" width="167" height="248" rx="12" fill="#19142E" stroke="#FFFFFF" stroke-opacity="0.09"/>
+    <rect x="20" y="470" width="167" height="184" rx="12" fill="url(#glm3)"/>
+    <rect x="30" y="480" width="54" height="20" rx="6" fill="#2C234D" fill-opacity="0.62"/><text x="57" y="494" font-size="10" font-weight="800" fill="#FFFFFF" text-anchor="middle">TikTok</text>
+    <circle cx="103" cy="562" r="20" fill="#FFFFFF" fill-opacity="0.94"/><path d="M98 554 L113 562 L98 570 Z" fill="#7A33FF"/>
+    <text x="34" y="682" font-size="13" font-weight="700" fill="#FFFFFF">BoltPods</text>
+    <text x="34" y="701" font-size="11" fill="#FFFFFF" fill-opacity="0.6">UGC hook ad</text>
+
+    <rect x="203" y="470" width="167" height="248" rx="12" fill="#19142E" stroke="#FFFFFF" stroke-opacity="0.09"/>
+    <rect x="203" y="470" width="167" height="184" rx="12" fill="url(#glm1)"/>
+    <rect x="213" y="480" width="76" height="20" rx="6" fill="#2C234D" fill-opacity="0.62"/><text x="251" y="494" font-size="10" font-weight="800" fill="#FFFFFF" text-anchor="middle">Instagram</text>
+    <circle cx="286" cy="562" r="20" fill="#FFFFFF" fill-opacity="0.94"/><path d="M281 554 L296 562 L281 570 Z" fill="#7A33FF"/>
+    <text x="217" y="682" font-size="13" font-weight="700" fill="#FFFFFF">Casa Linens</text>
+    <text x="217" y="701" font-size="11" fill="#FFFFFF" fill-opacity="0.6">Story ad</text>
+
+    <!-- row 3 -->
+    <rect x="20" y="740" width="167" height="248" rx="12" fill="#19142E" stroke="#FFFFFF" stroke-opacity="0.09"/>
+    <rect x="20" y="740" width="167" height="184" rx="12" fill="url(#glm2)"/>
+    <rect x="30" y="750" width="48" height="20" rx="6" fill="#2C234D" fill-opacity="0.62"/><text x="54" y="764" font-size="10" font-weight="800" fill="#FFFFFF" text-anchor="middle">Meta</text>
+    <circle cx="103" cy="832" r="20" fill="#FFFFFF" fill-opacity="0.94"/><path d="M98 824 L113 832 L98 840 Z" fill="#7A33FF"/>
+    <text x="34" y="952" font-size="13" font-weight="700" fill="#FFFFFF">TrailFuel Bars</text>
+    <text x="34" y="971" font-size="11" fill="#FFFFFF" fill-opacity="0.6">Ad set</text>
+
+    <rect x="203" y="740" width="167" height="248" rx="12" fill="#19142E" stroke="#FFFFFF" stroke-opacity="0.09"/>
+    <rect x="203" y="740" width="167" height="184" rx="12" fill="url(#glm3)"/>
+    <rect x="213" y="750" width="68" height="20" rx="6" fill="#2C234D" fill-opacity="0.62"/><text x="247" y="764" font-size="10" font-weight="800" fill="#FFFFFF" text-anchor="middle">Amazon</text>
+    <circle cx="286" cy="832" r="20" fill="#FFFFFF" fill-opacity="0.94"/><path d="M281 824 L296 832 L281 840 Z" fill="#7A33FF"/>
+    <text x="217" y="952" font-size="13" font-weight="700" fill="#FFFFFF">AquaPure Bottle</text>
+    <text x="217" y="971" font-size="11" fill="#FFFFFF" fill-opacity="0.6">A+ + video</text>
+  </g>
+
+  <rect x="115" y="1024" width="160" height="48" rx="24" fill="none" stroke="#FFFFFF" stroke-opacity="0.25"/>
+  <text x="195" y="1053" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">← Back to home</text>
+</svg>

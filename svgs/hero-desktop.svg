@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" fill="none">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="16%" r="55%">
+      <stop offset="0%" stop-color="#7A33FF" stop-opacity="0.42"/>
+      <stop offset="65%" stop-color="#7A33FF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0.25">
+      <stop offset="0%" stop-color="#F24CF3"/>
+      <stop offset="78%" stop-color="#C79BFF"/>
+    </linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" stroke="#FFFFFF" stroke-opacity="0.035" stroke-width="1" fill="none"/>
+    </pattern>
+  </defs>
+
+  <rect width="1440" height="900" fill="#140F28"/>
+  <rect width="1440" height="640" fill="url(#grid)"/>
+  <rect width="1440" height="900" fill="url(#glow)"/>
+
+  <!-- nav -->
+  <rect x="64" y="42" width="30" height="30" rx="9" fill="#7A33FF"/>
+  <text x="79" y="63" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">g</text>
+  <text x="104" y="63" font-family="Inter, sans-serif" font-size="19" font-weight="800" fill="#FFFFFF">GaanaAI</text>
+
+  <!-- eyebrow pill -->
+  <rect x="540" y="286" width="360" height="40" rx="20" fill="#FFFFFF" fill-opacity="0.05" stroke="#FFFFFF" stroke-opacity="0.12"/>
+  <circle cx="566" cy="306" r="4" fill="#7A33FF"/>
+  <text x="582" y="311" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF" fill-opacity="0.85">Instant creatives for e-commerce PDPs</text>
+
+  <!-- headline -->
+  <text x="720" y="408" font-family="Inter, sans-serif" font-size="56" font-weight="800" letter-spacing="-1.5" fill="#FFFFFF" text-anchor="middle">Turn your product page into</text>
+  <text x="720" y="476" font-family="Inter, sans-serif" font-size="56" font-weight="800" letter-spacing="-1.5" text-anchor="middle"><tspan fill="#FFFFFF">a </tspan><tspan fill="url(#grad)" font-style="italic">video that converts</tspan></text>
+
+  <!-- subhead -->
+  <text x="720" y="536" font-family="Inter, sans-serif" font-size="18" fill="#FFFFFF" fill-opacity="0.6" text-anchor="middle">GaanaAI reads your product page and generates scroll-stopping</text>
+  <text x="720" y="562" font-family="Inter, sans-serif" font-size="18" fill="#FFFFFF" fill-opacity="0.6" text-anchor="middle">ads and video — ready for Amazon, Shopify, and more.</text>
+
+  <!-- CTA -->
+  <rect x="618" y="604" width="204" height="56" rx="28" fill="#7A33FF"/>
+  <text x="714" y="639" font-family="Inter, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">Make my video  →</text>
+
+  <!-- checks -->
+  <text x="720" y="712" font-family="Inter, sans-serif" font-size="14" fill="#FFFFFF" fill-opacity="0.55" text-anchor="middle"><tspan fill="#7A33FF" font-weight="800">✓</tspan> Free preview     <tspan fill="#7A33FF" font-weight="800">✓</tspan> Any PDP link     <tspan fill="#7A33FF" font-weight="800">✓</tspan> Ready for every platform</text>
+
+  <!-- platform row -->
+  <text x="720" y="752" font-family="Inter, sans-serif" font-size="12" font-weight="700" letter-spacing="2.4" fill="#FFFFFF" fill-opacity="0.38" text-anchor="middle">AMAZON · SHOPIFY · FLIPKART · INSTAGRAM · TIKTOK</text>
+</svg>

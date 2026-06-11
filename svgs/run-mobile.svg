@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="1160" viewBox="0 0 390 1160" fill="none">
+  <defs>
+    <linearGradient id="gvm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7A33FF"/><stop offset="100%" stop-color="#2C234D"/>
+    </linearGradient>
+  </defs>
+  <rect width="390" height="1160" fill="#140F28"/>
+
+  <rect x="24" y="38" width="26" height="26" rx="8" fill="#7A33FF"/>
+  <text x="37" y="56" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#FFFFFF" text-anchor="middle">g</text>
+  <text x="58" y="56" font-family="Inter, sans-serif" font-size="17" font-weight="800" fill="#FFFFFF">GaanaAI</text>
+
+  <!-- stepper (dots only) -->
+  <g>
+    <circle cx="44" cy="118" r="13" fill="#28D684"/><text x="44" y="123" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#0D0A17" text-anchor="middle">✓</text>
+    <rect x="63" y="117" width="60" height="2" fill="#7A33FF" fill-opacity="0.45"/>
+    <circle cx="142" cy="118" r="13" fill="#28D684"/><text x="142" y="123" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#0D0A17" text-anchor="middle">✓</text>
+    <rect x="161" y="117" width="60" height="2" fill="#7A33FF" fill-opacity="0.45"/>
+    <circle cx="240" cy="118" r="13" fill="#28D684"/><text x="240" y="123" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#0D0A17" text-anchor="middle">✓</text>
+    <rect x="259" y="117" width="60" height="2" fill="#7A33FF" fill-opacity="0.45"/>
+    <circle cx="338" cy="118" r="13" fill="none" stroke="#7A33FF" stroke-width="2"/>
+    <text x="338" y="123" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#FFFFFF" text-anchor="middle">4</text>
+  </g>
+
+  <rect x="20" y="150" width="350" height="980" rx="18" fill="#19142E" stroke="#FFFFFF" stroke-opacity="0.09"/>
+  <text x="44" y="196" font-family="Inter, sans-serif" font-size="15" font-weight="800" fill="#FFFFFF">Generating your creatives</text>
+  <rect x="44" y="214" width="302" height="86" rx="12" fill="#7A33FF" fill-opacity="0.1" stroke="#7A33FF" stroke-opacity="0.25"/>
+  <text x="60" y="240" font-family="Inter, sans-serif" font-size="12" fill="#FFFFFF" fill-opacity="0.65">⏳ Images ~15–20s, video up to ~40s.</text>
+  <text x="60" y="258" font-family="Inter, sans-serif" font-size="12" fill="#FFFFFF" fill-opacity="0.65">Close this tab; we’ll email it when ready.</text>
+
+  <!-- card video -->
+  <rect x="44" y="318" width="302" height="180" rx="12" fill="url(#gvm)"/>
+  <rect x="54" y="328" width="66" height="20" rx="6" fill="#000000" fill-opacity="0.5"/>
+  <text x="87" y="342" font-family="Inter, sans-serif" font-size="10" font-weight="800" fill="#FFFFFF" text-anchor="middle">▶ VIDEO</text>
+  <circle cx="195" cy="408" r="22" fill="#FFFFFF" fill-opacity="0.92"/><path d="M189 399 L206 408 L189 417 Z" fill="#7A33FF"/>
+  <rect x="54" y="478" width="282" height="3" rx="1.5" fill="#FFFFFF" fill-opacity="0.35"/><rect x="54" y="478" width="110" height="3" rx="1.5" fill="#FFFFFF"/>
+  <text x="44" y="524" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#FFFFFF">PDP hero video</text>
+
+  <!-- card ad -->
+  <rect x="44" y="556" width="302" height="180" rx="12" fill="#FFFFFF"/>
+  <rect x="44" y="556" width="302" height="118" fill="url(#gvm)"/>
+  <rect x="54" y="566" width="40" height="20" rx="6" fill="#000000" fill-opacity="0.5"/><text x="74" y="580" font-family="Inter, sans-serif" font-size="10" font-weight="800" fill="#FFFFFF" text-anchor="middle">AD</text>
+  <rect x="60" y="690" width="180" height="9" rx="4" fill="#2C234D" fill-opacity="0.16"/>
+  <rect x="60" y="708" width="70" height="22" rx="11" fill="#7A33FF"/><text x="95" y="723" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#FFFFFF" text-anchor="middle">Shop now</text>
+  <text x="44" y="760" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#FFFFFF">Instagram ad</text>
+
+  <!-- card A+ -->
+  <rect x="44" y="792" width="302" height="180" rx="12" fill="#FFFFFF"/>
+  <rect x="54" y="802" width="48" height="20" rx="6" fill="#2C234D" fill-opacity="0.6"/><text x="78" y="816" font-family="Inter, sans-serif" font-size="9.5" font-weight="800" fill="#FFFFFF" text-anchor="middle">A+ MODULE</text>
+  <rect x="60" y="836" width="110" height="110" rx="8" fill="url(#gvm)"/>
+  <rect x="186" y="846" width="120" height="9" rx="4" fill="#2C234D" fill-opacity="0.16"/>
+  <rect x="186" y="865" width="100" height="9" rx="4" fill="#2C234D" fill-opacity="0.13"/>
+  <rect x="186" y="884" width="110" height="9" rx="4" fill="#2C234D" fill-opacity="0.13"/>
+  <rect x="186" y="903" width="80" height="9" rx="4" fill="#2C234D" fill-opacity="0.1"/>
+  <text x="44" y="996" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#FFFFFF">A+ content image</text>
+
+  <rect x="44" y="1024" width="302" height="54" rx="14" fill="#7A33FF"/>
+  <text x="195" y="1058" font-family="Inter, sans-serif" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">Unlock my full set  →</text>
+</svg>

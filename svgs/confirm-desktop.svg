@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" fill="none">
+  <defs>
+    <radialGradient id="glowC" cx="50%" cy="22%" r="55%">
+      <stop offset="0%" stop-color="#7A33FF" stop-opacity="0.28"/>
+      <stop offset="65%" stop-color="#7A33FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1440" height="900" fill="#140F28"/>
+  <rect width="1440" height="900" fill="url(#glowC)"/>
+
+  <rect x="64" y="42" width="30" height="30" rx="9" fill="#7A33FF"/>
+  <text x="79" y="63" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">g</text>
+  <text x="104" y="63" font-family="Inter, sans-serif" font-size="19" font-weight="800" fill="#FFFFFF">GaanaAI</text>
+
+  <rect x="480" y="210" width="480" height="500" rx="20" fill="#19142E" stroke="#FFFFFF" stroke-opacity="0.09"/>
+
+  <circle cx="720" cy="290" r="33" fill="#28D684"/>
+  <path d="M706 290 L716 300 L735 280" stroke="#0D0A17" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <text x="720" y="356" font-family="Inter, sans-serif" font-size="24" font-weight="800" fill="#FFFFFF" text-anchor="middle">Your creatives are on the way</text>
+  <text x="720" y="388" font-family="Inter, sans-serif" font-size="14.5" fill="#FFFFFF" fill-opacity="0.6" text-anchor="middle">We’re generating the full set for your brand and will</text>
+  <text x="720" y="408" font-family="Inter, sans-serif" font-size="14.5" fill="#FFFFFF" fill-opacity="0.6" text-anchor="middle">email everything to you@yourbrand.com shortly.</text>
+
+  <g font-family="Inter, sans-serif" font-size="14" fill="#FFFFFF" fill-opacity="0.82">
+    <text x="560" y="452" fill="#28D684" font-weight="800">✓</text><text x="582" y="452">A+ content image module</text>
+    <text x="560" y="480" fill="#28D684" font-weight="800">✓</text><text x="582" y="480">Listing video (15s)</text>
+    <text x="560" y="508" fill="#28D684" font-weight="800">✓</text><text x="582" y="508">Sponsored + Meta ad</text>
+    <text x="560" y="536" fill="#28D684" font-weight="800">✓</text><text x="582" y="536">6 more on-brand variants</text>
+    <text x="560" y="564" fill="#28D684" font-weight="800">✓</text><text x="582" y="564">Editable source files</text>
+  </g>
+
+  <rect x="540" y="596" width="200" height="50" rx="14" fill="#7A33FF"/>
+  <text x="640" y="627" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">Browse sample videos</text>
+  <rect x="752" y="596" width="148" height="50" rx="14" fill="none" stroke="#FFFFFF" stroke-opacity="0.25"/>
+  <text x="826" y="627" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">Back to home</text>
+
+  <line x1="514" y1="668" x2="926" y2="668" stroke="#FFFFFF" stroke-opacity="0.1"/>
+  <text x="720" y="694" font-family="Inter, sans-serif" font-size="13.5" fill="#FFFFFF" fill-opacity="0.6" text-anchor="middle">Selling a whole catalog? <tspan fill="#B794FF" font-weight="700">Book a demo</tspan> and we’ll do every SKU.</text>
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" fill="none">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="20%" r="55%">
+      <stop offset="0%" stop-color="#7A33FF" stop-opacity="0.3"/>
+      <stop offset="65%" stop-color="#7A33FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1440" height="900" fill="#140F28"/>
+  <rect width="1440" height="900" fill="url(#glow)"/>
+
+  <!-- nav -->
+  <rect x="64" y="42" width="30" height="30" rx="9" fill="#7A33FF"/>
+  <text x="79" y="63" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">g</text>
+  <text x="104" y="63" font-family="Inter, sans-serif" font-size="19" font-weight="800" fill="#FFFFFF">GaanaAI</text>
+
+  <!-- card -->
+  <rect x="480" y="205" width="480" height="512" rx="20" fill="#19142E" stroke="#FFFFFF" stroke-opacity="0.09"/>
+  <text x="514" y="262" font-family="Inter, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2" fill="#B794FF">FREE PREVIEW</text>
+  <text x="514" y="296" font-family="Inter, sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">Let’s make your video</text>
+  <text x="514" y="326" font-family="Inter, sans-serif" font-size="14" fill="#FFFFFF" fill-opacity="0.6">Just two things — your email and your product link.</text>
+  <text x="514" y="346" font-family="Inter, sans-serif" font-size="14" fill="#FFFFFF" fill-opacity="0.6">We’ll generate a free preview and email you the full set.</text>
+
+  <text x="514" y="392" font-family="Inter, sans-serif" font-size="12.5" font-weight="700" fill="#FFFFFF" fill-opacity="0.72">Your email</text>
+  <rect x="514" y="402" width="412" height="50" rx="12" fill="#FFFFFF" fill-opacity="0.05" stroke="#FFFFFF" stroke-opacity="0.18"/>
+  <text x="533" y="433" font-family="Inter, sans-serif" font-size="15" fill="#FFFFFF" fill-opacity="0.4">you@yourbrand.com</text>
+
+  <text x="514" y="478" font-family="Inter, sans-serif" font-size="12.5" font-weight="700" fill="#FFFFFF" fill-opacity="0.72">Your product page URL</text>
+  <rect x="514" y="488" width="412" height="50" rx="12" fill="#FFFFFF" fill-opacity="0.05" stroke="#FFFFFF" stroke-opacity="0.18"/>
+  <text x="533" y="519" font-family="Inter, sans-serif" font-size="15" fill="#FFFFFF" fill-opacity="0.4">https://…/your-product</text>
+
+  <rect x="514" y="556" width="160" height="32" rx="16" fill="#7A33FF" fill-opacity="0.16" stroke="#7A33FF" stroke-opacity="0.3"/>
+  <text x="530" y="576" font-family="Inter, sans-serif" font-size="12.5" font-weight="600" fill="#CBB4FF">Try an Amazon link</text>
+  <rect x="684" y="556" width="150" height="32" rx="16" fill="#7A33FF" fill-opacity="0.16" stroke="#7A33FF" stroke-opacity="0.3"/>
+  <text x="700" y="576" font-family="Inter, sans-serif" font-size="12.5" font-weight="600" fill="#CBB4FF">Try a Shopify link</text>
+
+  <rect x="514" y="606" width="412" height="54" rx="14" fill="#7A33FF"/>
+  <text x="720" y="640" font-family="Inter, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">Make my video  →</text>
+
+  <text x="720" y="692" font-family="Inter, sans-serif" font-size="12.5" fill="#FFFFFF" fill-opacity="0.4" text-anchor="middle">Free preview · no card needed · we only read your page.</text>
+</svg>
