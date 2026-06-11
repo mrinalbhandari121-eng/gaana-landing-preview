@@ -142,6 +142,10 @@
       .stp.reached:hover .stp-lbl { color: #fff; }
       .stp.viewing .stp-dot { box-shadow: 0 0 0 3px rgba(122,51,255,0.25); }
       .steps-hint { font-size: 11.5px; color: rgba(255,255,255,0.35); margin: -8px 0 16px; padding: 0 4px; }
+      @keyframes stpIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+      .stp.stp-enter { animation: stpIn 0.32s ease; }
+      @keyframes lineIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+      .stp-line.stp-enter { transform-origin: left; animation: lineIn 0.32s ease; }
       .phase { background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
       .ph-title { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 800; margin-bottom: 16px; }
       .ph-title .pic { display: inline-flex; }
@@ -507,19 +511,20 @@
       var PHIDS = ["phAnalyze", "phChans", "phFound", "phGen"];
       function drawSteps() {
         var el = document.getElementById("steps"); if (!el) return;
-        el.innerHTML = STEPS.map(function (s, n) {
+        var html = "";
+        for (var n = 0; n <= state.step; n++) {
           var done = n < state.step || (n === state.step && state.done);
           var active = n === state.step && !state.done;
-          var reached = n <= state.step;
-          var cls = (done ? "done " : "") + (active ? "active " : "") + (n === state.view ? "viewing " : "") + (reached ? "reached" : "");
-          var dot = done ? "✓" : (n + 1);
-          return (n ? '<div class="stp-line' + (n <= state.step ? " on" : "") + '"></div>' : "") + '<div class="stp ' + cls + '" data-n="' + n + '"><span class="stp-dot">' + dot + '</span><span class="stp-lbl">' + s + "</span></div>";
-        }).join("");
+          var newest = n === state.step;
+          html += (n ? '<div class="stp-line on' + (newest ? " stp-enter" : "") + '"></div>' : "") +
+            '<div class="stp ' + (done ? "done " : "") + (active ? "active " : "") + (n === state.view ? "viewing " : "") + "reached" + (newest ? " stp-enter" : "") + '" data-n="' + n + '"><span class="stp-dot">' + (done ? "✓" : (n + 1)) + '</span><span class="stp-lbl">' + STEPS[n] + "</span></div>";
+        }
+        el.innerHTML = html;
         Array.prototype.forEach.call(el.querySelectorAll(".stp.reached"), function (st) { st.addEventListener("click", function () { viewStep(+st.getAttribute("data-n")); }); });
         var h = document.getElementById("stepsHint"); if (h) h.style.display = state.step > 0 ? "" : "none";
       }
       function showView(n) { PHIDS.forEach(function (id, idx) { var e = document.getElementById(id); if (e) e.style.display = idx === n ? "" : "none"; }); }
-      function viewStep(n) { if (n > state.step) return; state.view = n; drawSteps(); showView(n); }
+      function viewStep(n) { if (n > state.step) return; state.view = n; var el = document.getElementById("steps"); if (el) Array.prototype.forEach.call(el.querySelectorAll(".stp"), function (st) { st.classList.toggle("viewing", +st.getAttribute("data-n") === n); }); showView(n); }
       function goLive(n) { var follow = state.view === state.step; state.step = n; state.done = false; if (follow) state.view = n; drawSteps(); showView(state.view); }
       function finishLive() { state.done = true; drawSteps(); }
       function phaseHTML(title, body) { return '<div class="ph-fade"><div class="ph-title">' + title + '</div>' + body + "</div>"; }
